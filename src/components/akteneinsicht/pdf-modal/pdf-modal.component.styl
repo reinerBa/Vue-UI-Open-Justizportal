@@ -1,0 +1,47 @@
+dialog.mdl-dialog
+    width 96%
+    position absolute
+    top 0
+    left 0
+    max-height calc(100vh - 7em)
+    min-height 15em
+
+.jp-pdf-preview-tray
+    display flex
+    flex-direction row-reverse
+    margin-left 1em
+    position absolute
+    right 1em
+    bottom 1em
+
+
+.pdf-preview-minimized
+    border 1px green
+    background-color cornflowerblue
+    padding .5em
+    color white
+    font-weight bold
+    cursor default
+    margin-right 1em
+
+    i
+        margin-left .1em
+
+embed.mdl-dialog__content
+    padding 0
+    max-height calc(89% - 3em)
+    min-height calc(82vh - 3em)
+
+ng2-pdfjs-viewer
+  height calc(100vh - 9em)
+  display block
+
+  ::ng-deep iframe
+    max-height calc(100vh - 10.5em)
+	  
+.mdl-dialog__title
+    font-size: 2em;
+    padding-top: 0.25em;
+
+.mdl-dialog__actions
+    float right

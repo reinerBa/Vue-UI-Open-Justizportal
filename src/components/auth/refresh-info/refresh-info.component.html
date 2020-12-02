@@ -1,0 +1,10 @@
+<div *ngIf="SnackbarVisible" class="mdl-snackbar" [ngClass]="{'mdl-snackbar--active': ShowSnackbar }">
+  <div class="mdl-snackbar__text">
+    Achtung, Ihre Sitzung läuft bald ab!
+  </div>
+  <div class="mdl-snackbar__button">
+    <button  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="refresh()">
+        <i class="material-icons">refresh</i>
+    </button>
+  </div>
+</div>

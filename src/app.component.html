@@ -1,0 +1,24 @@
+<div class="jp-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+
+  <header class="mdl-layout__header jp-header">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title jp-header__title">{{ title }}</span>
+      <div class="mdl-layout-spacer"></div>
+    </div>
+  </header>
+
+  <div class="mdl-layout__drawer jp-drawer">
+    <jp-menu-header></jp-menu-header>
+    <div class="jp-divider"></div>
+    <jp-auth-info></jp-auth-info>
+    <div class="jp-divider"></div>
+    <jp-menu></jp-menu>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="jp-main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
+
+<jp-refresh-info></jp-refresh-info>

@@ -1,0 +1,9 @@
+<div class="jp-tray-preview-tray"> <!-- window list -->
+    <table *ngFor="let pdfWindow of trayObjects " class="jp-tray-minimized">
+        <tr>
+            <td title={{pdfWindow.datei.dateiname}}>{{pdfWindow.datei.dateiname}}</td>
+            <td (click)="maximizePdf.emit(pdfWindow)"><i class="material-icons">launch</i></td>
+            <td (click)="removePreview.emit(pdfWindow.id)"><i class="material-icons">cancel</i></td>
+        </tr>
+    </table>
+</div>

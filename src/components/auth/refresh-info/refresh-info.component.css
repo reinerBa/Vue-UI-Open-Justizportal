@@ -1,0 +1,25 @@
+.mdl-snackbar {
+  background-color: rgb(135,29,51);
+}
+
+.mdl-snackbar__text {
+  font-size: 26px;
+  line-height: normal;
+  align-self:center;
+}
+
+.material-icons {
+  font-size: 40px;
+  height: unset !important;
+  width: unset !important;
+}
+
+.mdl-button {
+  background: whitesmoke;
+  height: 50px;
+}
+
+.mdl-snackbar__button{
+  align-self:center;
+  padding:14px 24px 14px 12px;
+}

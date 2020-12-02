@@ -1,0 +1,9 @@
+<div class="jp-dateiinfo">
+  <button *ngIf="datei.mimeType == 'application/pdf'" (click)="showPreview()" class="mdl-button jp-dateiinfo__button">
+    <i class="material-icons">visibility_alt</i>
+  </button>
+  <button *ngIf="!downloadRestricted" (click)="doDownload()" class="mdl-button jp-dateiinfo__button">
+    <i class="material-icons">save_alt</i>
+  </button>
+  <span class="jp-dateiinfo__typesize">({{ datei.mimeType | mimetype }}, {{ datei.size | filesize }})</span>
+</div>

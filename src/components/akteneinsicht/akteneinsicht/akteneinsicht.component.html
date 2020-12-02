@@ -1,0 +1,54 @@
+<h2>Aktendaten</h2>
+<div *ngIf="akteneinsicht">
+  <table>
+    <tr>
+      <td>Aktenzeichen:</td>
+      <td>{{ akteneinsicht.aktenzeichen }}</td>
+    </tr>
+    <tr>
+      <td>Kurzrubrum:</td>
+      <td>{{ akteneinsicht.kurzrubrum }}</td>
+    </tr>
+    <tr>
+      <td>Ablauf der Bereitstellung:</td>
+      <td>{{ akteneinsicht.ablauf | date }}</td>
+    </tr>
+    <tr *ngIf="akteneinsicht.datei && !akteneinsicht.nurVorschau" >
+      <td>Gesamtakte:</td>
+      <td>
+        <jp-datei-info (download)="download(akteneinsicht.datei)" [datei]="akteneinsicht.datei"></jp-datei-info>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2>Dokumente</h2>
+<table [hidden]="hasFullscreen" class="mdl-data-table mdl-js-data-table jp-table-dokumente">
+  <thead>
+    <tr>
+      <th>Nr.</th>
+      <th>Datum</th>
+      <th>Art</th>
+      <th>Beschreibung</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let detail of details">
+    <tr>
+      <td>{{ detail.nummer }}</td>
+      <td>{{ detail.datum | date }}</td>
+      <td>{{ detail.art }}</td>
+      <td>{{ detail.beschreibung }}</td>
+      <td>
+        <jp-datei-info
+          (download)="download(detail.datei)"
+          (showPdfSource)="openPreview(detail.datei)"
+          *ngIf="detail.datei"
+          [datei]="detail.datei"
+          [downloadRestricted]="akteneinsicht.nurVorschau"></jp-datei-info>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<jp-pdf-modal [singlePdf]="singlePreview" [downloadRestricted]="akteneinsicht && akteneinsicht.nurVorschau" (closePdfId)="closePreview($event)"></jp-pdf-modal>

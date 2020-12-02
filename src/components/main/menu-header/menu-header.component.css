@@ -1,0 +1,21 @@
+.jp-logo {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  margin: 0 auto;
+}
+.jp-logo > img {
+  height: 184px;
+  width: 150px;
+  display: block;
+}
+.jp-logo > h1 {
+  color: #3c3c3c;
+  margin: 6px;
+}
+
+.jp-menu-header__logo-labor {
+  background-image: url('/assets/img/logo_labor.png');
+}
