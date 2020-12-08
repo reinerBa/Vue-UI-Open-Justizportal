@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '../../../services/interceptors/@angular/core';
 import { AuthService, AuthStore } from '@jp-suite/core';
 import { DebugContext } from '@angular/core/src/view';
 import { debug } from 'util';
 
 import { Subscription } from 'rxjs/internal/Subscription';
-import { timer } from 'rxjs';
+import { timer } from '../../../services/interceptors/rxjs';
 import { duration, now } from 'moment';
 import { AuthInfo } from 'libs/core/src/lib/model/auth-info';
 

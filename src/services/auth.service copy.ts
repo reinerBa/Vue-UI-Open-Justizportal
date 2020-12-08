@@ -1,29 +1,32 @@
-import { Injectable } from './interceptors/@angular/core';
-import { Observable, Subscription, timer } from './interceptors/rxjs';
 import { AuthResponse } from '../model/auth-response';
 import { AuthInfo } from '../model/auth-info';
-import { AuthStore } from '../store/auth-store';
-import { HttpClient } from './interceptors/@angular/common/http';
 import { ConfigService } from '../contracts';
-import { AppConfig } from '../model';
 import { tap, shareReplay } from 'rxjs/operators';
 import { LocalStoreService } from '../store/local-store.service';
 import moment from 'moment'
 import { AuthErrorCodes } from '../model/auth-error-codes';
 import { Router } from '@angular/router';
+import { AbstractAuthService } from './Contracts/abstractAuth.service';
+import {AxiosInstance} from 'axios'
+import { AppConfig, AuthResponse } from '../ressources/model'
 
 interface AuthRequest {
   username: string;
   password: string;
 }
 
-export class AuthService {
+// eher etwas für vuex actions
+export class AuthService extends AbstractAuthService {
 
   private _config: AppConfig;
   private _expiredTimer: Subscription;
 
-  constructor(private http: HttpClient, private auth: AuthStore, private localStore: LocalStoreService, private configService: ConfigService, private router: Router) {
-    this._config = configService.getConfig();
+  constructor(private http: AxiosInstance, 
+    config: AppConfig,
+    private localStore: LocalStoreService, 
+    private configService: ConfigService, 
+    private router: Router) {
+    this._config = config
     this.storeAuthInfo(this.loadFromLocalStore());
   }
 
@@ -37,24 +40,18 @@ export class AuthService {
     }
   }
 
-  public login(userName: string, password: string): Observable<AuthResponse> {
+  public async login(userName: string, password: string): Promise<AuthResponse> {
     const authRequest: AuthRequest = {
       username: userName,
       password: password
-    };
-
-    return this.http.post<AuthResponse>(
-      this._config.tokenUrl, authRequest
-    ).pipe(
-      tap(res => {
-        if(res.returnCode === AuthErrorCodes.Ok)
-          this.storeAuthResponse(authRequest.username, res)
-      }),
-      shareReplay()
-    );
+    }
+    const response = await this.http.post<AuthResponse>(this._config.tokenUrl, authRequest)
+    if(response.statusText === AuthErrorCodes.Ok) {
+      this.storeAuthResponse(authRequest.username, response)
+    }
   }
 
-  public refresh() {
+  public async refresh() {
     const authInfo = this.auth.getAuthInfo();
     if (authInfo && !authInfo.isExpired()) {
       return this.http.get<AuthResponse>(
@@ -99,7 +96,7 @@ export class AuthService {
     this.storeAuthInfo(authInfo);
   }
 
-  public logout() {
+  public async logout() {
     this.localStore.clearAuthInfo();
     this.auth.setAuthInfo(null);
     this.router.navigateByUrl('/home');

@@ -1,10 +1,11 @@
 <template>
-  <span>{{ expiresIn }}</span>
+  <span>{{ expiresInDuration }}</span>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
 import { Moment, Duration, duration, now } from 'moment'
+import { durationFilter } from '../../filters/duration.filter'
 
 let intervalHandler: NodeJS.Timeout
 export default defineComponent({
@@ -18,6 +19,11 @@ export default defineComponent({
   data () {
     return {
       expiresIn: 0
+    }
+  },
+  computed: {
+    expiresInDuration () {
+      return durationFilter(this.expiresIn)
     }
   },
   mounted () {

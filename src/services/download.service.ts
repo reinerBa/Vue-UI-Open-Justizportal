@@ -1,23 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Datei, AppConfig } from '../model';
+import { Datei, AppConfig } from '../ressources/model/index'
+import { AbstractDownloadService } from './Contracts/abstractDownload.service'
+import { AuthInfo } from '../ressources/model/index'
 
-import { ConfigService } from '../contracts/config.service';
-import { AuthStore } from './auth-store';
+export class DownloadService extends AbstractDownloadService {
 
-@Injectable()
-export class DownloadService {
+  private readonly config: AppConfig
 
-  private readonly config: AppConfig;
-
-  constructor(private auth: AuthStore, configService: ConfigService) {
-    this.config = configService.getConfig();
+  constructor(config: AppConfig) {
+    super()
+    this.config = config
   }
 
-  public download(datei: Datei) {
-    let authInfo = this.auth.getAuthInfo();
+  public download(datei: Datei, auth: AuthInfo) {
 
-    if(authInfo && !authInfo.isExpired()) {
+    if(auth && !auth.isExpired()) {
       var url = this.config.dateienUrl + '/' + datei.id + '/download?access_token=' + authInfo.token;
       var a = document.createElement('a');
       document.body.appendChild(a);
@@ -27,9 +23,9 @@ export class DownloadService {
       a.remove();
     }
   }
-  public preview(datei: Datei, escaped:boolean = false): string {
-    const authInfo = this.auth.getAuthInfo();
-    if(!authInfo || authInfo.isExpired()) return ''
+
+  public preview(datei: Datei, escaped:boolean = false, auth: AuthInfo): string {
+    if(!auth || auth.isExpired()) return ''
     let equ="="
     if (escaped) equ="%3D"
 
@@ -40,7 +36,7 @@ export class DownloadService {
       dateienUrl=location.origin + '/' + dateienUrl
     }
 
-    const url = dateienUrl + '/' + datei.id + '/preview?access_token'+ equ + authInfo.token;
+    const url = dateienUrl + '/' + datei.id + '/preview?access_token'+ equ + auth.token;
 
     return url
   }

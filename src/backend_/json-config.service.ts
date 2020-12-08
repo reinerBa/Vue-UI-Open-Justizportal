@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '../services/interceptors/@angular/core';
+import { HttpClient, HttpHeaders } from '../services/interceptors/@angular/common/http';
 
 import { AppConfig, AppOperator, ConfigService } from '@jp-suite/core';
 

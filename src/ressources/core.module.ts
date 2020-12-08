@@ -1,6 +1,6 @@
-import { NgModule, Optional, SkipSelf, ModuleWithProviders, LOCALE_ID } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ModuleWithProviders, LOCALE_ID } from '../services/interceptors/@angular/core';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '../services/interceptors/@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 
@@ -10,7 +10,7 @@ import { DownloadService } from './services/download.service';
 import { FilesizePipe } from './pipes/filesize.pipe';
 import { MimetypePipe } from './pipes/mimetype.pipe';
 import { DurationPipe } from './pipes/duration.pipe';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthInterceptor } from '../services/interceptors/auth.interceptor';
 import { LocalStoreService, AuthService } from './services';
 
 registerLocaleData(localeDe);

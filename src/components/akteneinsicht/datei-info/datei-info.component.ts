@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '../../../services/interceptors/@angular/core';
 import { Datei } from '@jp-suite/core';
 
 @Component({

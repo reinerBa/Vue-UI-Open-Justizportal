@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, IterableDiffers, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, IterableDiffers, OnChanges, SimpleChanges } from '../../../services/interceptors/@angular/core';
 import { Preview, DownloadService } from '@jp-suite/core';
 import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 

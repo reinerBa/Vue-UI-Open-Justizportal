@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '../../../services/interceptors/@angular/core';
 import { Datei, Preview  } from '@jp-suite/core';
 
 @Component({
@@ -13,7 +13,6 @@ export class TrayScrollComponent implements OnInit {
 
   leftHidden: string[]
   rightHidden: string[]
-  visibleTrayObjects: Preview[]
 
   constructor() { }
 

@@ -1,4 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
+
+export function mimetypeFilter (value: any) : string {
+  if (typeof (value)) {
+    var result = FILETYPES.filter(ft => {
+      return ft.mime === value;
+    });
+
+    if(result.length > 0) {
+      return result[0].name;
+    }
+  }
+  return UNKNOWN_FILE;;
+}
+
 
 type filetype = {
   mime: string;
@@ -22,20 +35,3 @@ const FILETYPES: filetype[] = [
 ];
 const UNKNOWN_FILE = "Dokument";
 
-@Pipe({
-  name: 'mimetype'
-})
-export class MimetypePipe implements PipeTransform {
-  transform(value: any): any {
-    if (typeof (value)) {
-      var result = FILETYPES.filter(ft => {
-        return ft.mime === value;
-      });
-
-      if(result.length > 0) {
-        return result[0].name;
-      }
-    }
-    return UNKNOWN_FILE;;
-  }
-}

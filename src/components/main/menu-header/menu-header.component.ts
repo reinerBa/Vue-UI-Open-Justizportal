@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '../../../services/interceptors/@angular/core';
 import { ConfigService, AppConfig, AppOperator } from '@jp-suite/core';
 
 @Component({
