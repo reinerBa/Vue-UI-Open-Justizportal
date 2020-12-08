@@ -27,7 +27,8 @@ export class AkteneinsichtService extends AbstractAkteneinsichtService {
     const response = await this.http.get<Detail[]>(this.config.akteneinsichtenUrl + '/' + akteneinsicht.id + '/details');
     return response.data
   }
-
+  
+  // unused
   public async downloadDatei(datei: Datei) : Promise<Object> {
     const response = await this.http.get(this.config.dateienUrl + '/' + datei.id + '/download', {responseType: 'blob'});
     return response.data

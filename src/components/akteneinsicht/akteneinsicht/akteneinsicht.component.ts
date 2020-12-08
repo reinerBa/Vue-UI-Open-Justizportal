@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '../../../services/interceptors/@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AkteneinsichtService, Akteneinsicht, Detail, Datei, PortalStateService, DownloadService, Preview } from '@jp-suite/core';
