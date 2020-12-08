@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { PortalState } from '../model';
+import { PortalState } from '../ressources/model'
+import { reactive } from 'vue'
 
-@Injectable()
 export class PortalStateService {
 
   private stateChangedSource = new Subject<PortalState>();

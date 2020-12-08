@@ -1,6 +1,6 @@
 <template>
-<div *ngIf="!useDefault" [innerHTML]="dataProtectionHtml"></div>
-<div *ngIf="useDefault">
+<div v-if="!useDefault" v-html="dataProtectionHtml"></div>
+<div v-else>
   <h2>
     Datenschutzerklärung
   </h2>
@@ -122,15 +122,47 @@
 </template>
 
 <script lang="ts">
-export default {
+import { ref, reactive, Ref, defineComponent } from 'vue'
+import { AppOperator } from '../../ressources/model'
+import { useStore } from 'vuex';
+import State from '../../store/store'
+
+export default defineComponent({
   name: 'Datenschutz',
   props: {
     msg: String
   },
-  data() {
-    return {
-      count: 0
+  setup () {
+    let config: AppOperator = reactive(<AppOperator>{})
+    let dataProtectionHtml: Ref<string> = ref('')
+
+    return { config, dataProtectionHtml }
+  },
+  computed: {
+      useDefault () : boolean {
+        return this.config == null ? false : this.config.privacyPolicyUrl === 'default'
+      }
+  },
+  mounted () {
+    // this.config = configService.getOperatorConfig();
+    // this.stateService.changeState({title: 'Datenschutz'});
+
+    let dsContent = sessionStorage.getItem("dataProtectionContent")
+    
+    if (Boolean(dsContent)) {
+      this.dataProtectionHtml = dsContent;
+    } else if (this.config.privacyPolicyUrl !== 'default') {
+      fetch(this.config.privacyPolicyUrl)
+      .then(response => response.body.getReader().read()
+        .then(d => {
+          let { value: chunk, done: readerDone } = d;
+          let utf8Decoder = new TextDecoder('utf-8');
+          let content = chunk ? utf8Decoder.decode(chunk) : '';
+          this.dataProtectionHtml = content
+          sessionStorage.setItem('dataProtectionContent', content);
+        })
+      )
     }
   }
-}
+})
 </script>

@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
-import { AuthInfo } from '../model/auth-info';
-import moment = require('moment');
+import { AuthInfo } from '../ressources/model'
+import moment from 'moment'
 
 const EXPIRES_AT = 'expiresAt';
 const TOKEN = 'id_token';
 const USER = 'user';
 
-@Injectable()
 export class LocalStoreService {
 
   public getAuthInfo(): AuthInfo {

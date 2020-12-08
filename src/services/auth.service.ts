@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subscription, timer } from 'rxjs';
 import { AuthResponse } from '../model/auth-response';
 import { AuthInfo } from '../model/auth-info';
-import { AuthStore } from './auth-store';
+import { AuthStore } from '../store/auth-store';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../contracts';
 import { AppConfig } from '../model';
 import { tap, shareReplay } from 'rxjs/operators';
-import { LocalStoreService } from './local-store.service';
-import moment = require('moment');
+import { LocalStoreService } from '../store/local-store.service';
+import moment from 'moment'
 import { AuthErrorCodes } from '../model/auth-error-codes';
 import { Router } from '@angular/router';
 
@@ -17,7 +17,6 @@ interface AuthRequest {
   password: string;
 }
 
-@Injectable()
 export class AuthService {
 
   private _config: AppConfig;
