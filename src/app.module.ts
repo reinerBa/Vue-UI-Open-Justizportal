@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule, LOCALE_ID } from '@angular/core';
+import { APP_INITIALIZER, NgModule, LOCALE_ID } from './services/interceptors/@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';

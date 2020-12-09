@@ -1,26 +1,31 @@
 <template>
-<div>
-  <h2>Ihre Akteneinsichten:</h2>
-<ul>
+  <div>
+    <h2>Ihre Akteneinsichten:</h2>
+  <ul>
     <li v-for="(akteneinsicht, idx) of akteneinsichten" :key="'akteneinsichten' + idx">
-        <a :routerLink="['/akteneinsichten', akteneinsicht.id]">
-          {{ akteneinsicht.aktenzeichen }}
-        </a>
-      </li>  
-</ul>
-
-</div>
+      <router-link to="'/akteneinsichten/' + akteneinsicht.id">
+        {{ akteneinsicht.aktenzeichen }}
+      </router-link>
+    </li>  
+  </ul>
+  </div>
 </template>
 
 <script lang="ts">
-import { AxiosInstance } from "axios";
-import { defineComponent } from "vue";
-import { Akteneinsicht, AppConfig } from "../../ressources/model";
-import { AkteneinsichtService } from "../../services";
-import { AbstractAkteneinsichtService } from "../../services/Contracts";
+import { AxiosInstance } from "axios"
+import { defineComponent } from "vue"
+import { Akteneinsicht, AppConfig } from "../../ressources/model"
+import { AkteneinsichtService, AbstractAkteneinsichtService } from "../../services"
 
 export default defineComponent({
   name: 'Elektronische Akteneinsicht',
+  beforeRouteEnter (to, from, next) {
+    if (true) { // todo: wenn authInfo korrekt und nicht expired
+      next()
+    } else {
+      next({path: '/login'})
+    }
+  },
   data () {
     return {
       akteneinsichten: new Array<Akteneinsicht>(),

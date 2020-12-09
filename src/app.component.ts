@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from './services/interceptors/@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PortalStateService, PortalState  } from '@jp-suite/core';
 import { version } from '../../package.app.json';

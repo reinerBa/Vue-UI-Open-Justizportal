@@ -23,7 +23,7 @@
   <div class="jp-login-info__info-text" v-if="!(auth.authInfo$ | async)">
     <div>Sie sind nicht angemeldet.</div>
     <div>
-      <a routerLink="login">zur Anmeldung</a>
+      <router-link to="/login">zur Anmeldung</router-link>
     </div>
   </div>
 </div>

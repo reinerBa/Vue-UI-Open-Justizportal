@@ -1,23 +1,29 @@
 <template>
   <h1>{{ msg }}</h1>
   <button @click="count++">count is: {{ count }}</button>
+  <p>{{title}} <input v-model="title"/></p>
   <p>Edit <code>components/HelloWorld.vue</code> to test hot module replacement.</p>
 </template>
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
+import { reactive, defineComponent } from 'vue'
 
-class Props {
-  msg?: String
-}
-
-export default class HelloWorld extends Vue {
-  props: { msg: '' }
-  // The behavior in class is the same as the current
-  count = 0
-
-  increment() {
-    this.count++
+export default {
+  name: "HelloWorld",
+  props: {
+    msg: String
+  },
+  data () {
+    return {
+      count: 0,
+      title:"hi"
+    }
+  },
+  methods: {
+    increment() {
+      this.count++
+    } 
   }
 }
 </script>

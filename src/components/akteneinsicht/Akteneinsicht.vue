@@ -68,13 +68,26 @@ import { AkteneinsichtService } from "../../services"
 
 export default defineComponent({
   name: 'Akteneinsicht',
+  beforeRouteEnter (to, from, next) {
+    if (true) { // todo: wenn authInfo korrekt und nicht expired
+      next()
+    } else {
+      next({path: '/login'})
+    }
+  },
+  props :{
+    id: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       akteneinsicht: null as Akteneinsicht,
       details: new Array<Detail>(),         
       openPreviews: new Array<Preview>(),   
       singlePreview: null as Preview,
-      aktenEinsichtService: null as AbstractAkteneinsichtService
+      akteneinsichtService: null as AbstractAkteneinsichtService
     }
   },
   computed: {
@@ -116,9 +129,9 @@ export default defineComponent({
     }
   },
   async mounted(){
-    this.aktenEinsichtService = new AkteneinsichtService(null as AppConfig, this.$http)
-    let result = await this.aktenEinsichtService.getAkteneinsicht( 0)//route.params['id']); this.route.params.subscribe(params 
-
+    this.akteneinsichtService = new AkteneinsichtService(null as AppConfig, this.$http)
+    let result = await this.akteneinsichtService.getAkteneinsicht(this.id)
+    
     this.akteneinsicht = result
     //todo: change state  title: this.akteneinsicht.aktenzeichen
 
