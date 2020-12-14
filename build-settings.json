@@ -1,0 +1,4 @@
+{
+    "configURL":"./assets/config.json",
+    "operatorConfigUrl": "./assets/operator-config.json"
+}

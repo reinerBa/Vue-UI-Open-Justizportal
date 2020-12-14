@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from "../../services/interceptors/@angular/core";
 import { CanActivateChild, Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { AuthStore } from "@jp-suite/core";
 

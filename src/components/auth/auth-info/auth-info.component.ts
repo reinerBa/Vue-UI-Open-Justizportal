@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '../../../services/interceptors/@angular/core';
 import { AuthService, AuthStore } from '@jp-suite/core';
 
-import { timer, Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { timer, Subscription, Observable, BehaviorSubject } from '../../../services/interceptors/rxjs';
 import { Duration, duration, now } from 'moment';
 import { AuthInfo } from 'libs/core/src/lib/model/auth-info';
 

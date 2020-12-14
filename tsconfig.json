@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
-      "module": "system",
+      "module": "ES2015",
       "noImplicitAny": true,
       "removeComments": true,
-      "preserveConstEnums": true,
-      "outFile": "../../built/local/tsc.js",
-      "sourceMap": true
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "preserveConstEnums": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts"]

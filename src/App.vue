@@ -25,13 +25,18 @@
   <jp-refresh-info />
 </template>
 
-<script>
-import RefreshInfo from './components/auth/RefreshInfo'
-import MenuHeader from './components/main/NavMenuHeader'
-import AuthInfo from './components/auth/AuthInfo'
-import NavMenu from './components/main/NavMenu'
+<script lang="ts">
+import RefreshInfo from './components/auth/RefreshInfo.vue'
+import MenuHeader from './components/main/NavMenuHeader.vue'
+import AuthInfo from './components/auth/AuthInfo.vue'
+import NavMenu from './components/main/NavMenu.vue'
+import { App, defineComponent } from 'vue'
+import packageSettings from '../package.json'
+import { ProvideConfigs, ProvideServices } from './services/Service.container'
+import { AbstractJSONConfigService, JSONConfigService } from './services'
+import buildSettings from '../build-settings.json'
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
    'jp-menu-header': MenuHeader,
@@ -44,10 +49,19 @@ export default {
       title: 'Justizportal'
     }
   },
+  async created () {
+    const jsonService: AbstractJSONConfigService = new JSONConfigService(this.$http)
+    const appConfig = await jsonService.getAppConfig(buildSettings.configURL)
+    const appOperatorConfig = await jsonService.getAppOperatorConfig(buildSettings.operatorConfigUrl)
+
+    ProvideServices(this, appConfig, this.$http)
+    ProvideConfigs(this, appConfig, appOperatorConfig)
+    // todo: save settings to vuex state
+  },
   mounted () {
     //      this.title = state.title;
     //  this.titleService.setTitle('Justizportal | ' + this.title);
-    console.log("Justizportal v." + version);
+    console.log("Justizportal v." + packageSettings.version);
   }
-}
+})
 </script>
