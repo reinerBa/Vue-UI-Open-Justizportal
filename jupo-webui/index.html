@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <!-- Copyright 2019 Oberverwaltungsgericht Rheinland-Pfalz, lizenziert unter der EUPL-1.2 -->
+	<!-- A list of the third-party software used and their licenses can be found under "/3rdpartylicenses.txt" -->
+    <link rel="icon" href="/assets/img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Vital App</title>
+	<script>
+      var hinweisBrowser = 'Sicherheitswarnung: Sie benutzen den Internet-Explorer, dieser wird als "Nicht sicher" eingestuft!'
+      if (window.navigator.userAgent.indexOf("Trident/") > -1 ||
+          window.navigator.userAgent.indexOf("MSIE") > -1)
+          alert(hinweisBrowser)
+    </script>
+	<link rel="preload" href="./assets/css/color-scheme.css" as="style" />
+	<link rel="preload" href="/assets/config.json" as="fetch">
+	<link rel="preload" href="/assets/operator-config.json" as="fetch">
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+	<link rel="stylesheet" href="./assets/css/color-scheme.css">
   </body>
 </html>
