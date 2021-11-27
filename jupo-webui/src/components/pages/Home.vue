@@ -1,8 +1,7 @@
-<script setup>
-var IsLoggedIn = false
-function homeWelcomeText() {
-    return "hwt";
-}
+<script lang="ts" setup>
+var IsLoggedIn: Boolean = false
+var homeWelcomeText: String = "hwt"
+
 </script>
 
 <template>
@@ -16,7 +15,8 @@ function homeWelcomeText() {
 </p>
 
 <p v-if="IsLoggedIn">
-  <a routerLink="/akteneinsichten" routerLinkActive="jp-navigation__link--activated">Zur elektronischen Akteneinsicht</a>
+    <router-link to="/akteneinsichten">Zur elektronischen Akteneinsicht</router-link>
+  <!--<a routerLink="/akteneinsichten" routerLinkActive="jp-navigation__link--activated">Zur elektronischen Akteneinsicht</a>-->
 </p>
 </template>
 
