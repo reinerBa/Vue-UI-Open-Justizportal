@@ -1,14 +1,12 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 const Component = defineComponent({
-  methods:{
-  }
 })
-</script>
+</script> 
 
 <script lang="ts" setup>
-    const expiresIn: String = ''
+  const expiresIn: String = ''
 </script>
 
 <template>

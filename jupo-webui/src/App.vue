@@ -1,6 +1,4 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import JpMenu from './components/navigation/JpMenu.vue'
 import JpMenuHeader from './components/navigation/JpMenuHeader.vue'
 import JpAuthInfo from './components/navigation/JpAuthInfo.vue'
@@ -20,12 +18,11 @@ var title = 'jupo!'
   </header>
 
   <div class="mdl-layout__drawer jp-drawer">
+    <JpMenuHeader />
+    <div class="jp-divider"></div>
+    <JpAuthInfo />
+    <div class="jp-divider"></div>
     <JpMenu/>
-    <jp-menu-header></jp-menu-header>
-    <div class="jp-divider"></div>
-    <jp-auth-info></jp-auth-info>
-    <div class="jp-divider"></div>
-    <jp-menu></jp-menu>
   </div>
   <main class="mdl-layout__content">
     <div class="jp-main-content">
@@ -36,14 +33,3 @@ var title = 'jupo!'
 
 <RefreshInfo/>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

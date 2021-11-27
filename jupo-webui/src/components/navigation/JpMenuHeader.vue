@@ -1,5 +1,5 @@
-<script setup>
-var headerTitle = ''
+<script lang="ts" setup>
+var headerTitle: String = ''
 
 function isLabor() {return false}
 </script>

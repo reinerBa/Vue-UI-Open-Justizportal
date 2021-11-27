@@ -1,42 +1,66 @@
-<script setup>
-import { ref } from 'vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-defineProps({
-  msg: String
+const Component = defineComponent({
+  mounted(){
+    // count down the countdown time
+  }
 })
+</script> 
 
-const count = ref(0)
+<script lang="ts" setup>
+const countdown = "00:00" 
+const isLoggedIn = false
+const isRefreshing = true
+function logout(){}
+function refreshToken(){}
+const authInfo = {}
 </script>
 
 <template>
-  <h1>{{ msg }}h</h1>
-<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-  Button
-</button>
-  <p>
-    Recommended IDE setup:
-    <a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
-    +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-  </p>
+<div class="mdl-navigation jp-navigation jp-usercontrol">
+  <div class="jp-login-info__info-text" v-if="true"> <!-- todo auth.authInfo$ | async as authInfo-->
+    <div>
+    <span>Angemeldet als:&nbsp;</span>
+    <strong id="reference-info">{{ authInfo.username }}</strong><br />
+    <span>Abmeldung in: 
+      <span id="countdown-time">{{countdown}}</span>
+    </span>       
+<br/>
+    <div class="jp-login-info__buttons">
+        <button id="refresh_token_button" :disabled="isRefreshing" class="mdl-button mdl-js-button mdl-button--raised jp-login-info__refresh-button jp-changeable-button" 
+        @click="refreshToken">
+            <i class="material-icons jp-changeable-button--hide">refresh</i>
+            <span class="jp-changeable-button--show">
+              Anmeldung erneuern
+            </span>
+          </button>
 
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Documentation
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
-  </p>
-
-  <button type="button" @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+      <button id="logout_button" class="mdl-button mdl-js-button mdl-button--raised jp-login-info__logout-button" @click="logout()">
+        Abmelden
+      </button>
+    </div>
+  </div>
+  </div>
+  <div class="jp-login-info__info-text" v-if="isLoggedIn"> <!-- prüfen mit authStore -->
+    <div>Sie sind nicht angemeldet.</div>
+    <div>
+      <router-link to="login" id="login_link">zur Anmeldung</router-link>
+    </div>
+  </div>
+</div>
 </template>
 
-<style scoped>
-a {
-  color: #42b983;
+<style lang="stylus" scoped>
+.jp-usercontrol{
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.jp-login-info__buttons button{
+  width: 100%;
+  margin: 8px 0;
+}
+.jp-login-info__buttons button::first-of-type{
+  margin-top: 16px
 }
 </style>
