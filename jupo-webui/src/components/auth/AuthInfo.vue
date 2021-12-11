@@ -1,5 +1,9 @@
 <script lang="ts">
-import Vue from 'vue'
+import { ComputedRef } from '@vue/reactivity'
+import { useStore } from './../../store/authStore'
+import { defineComponent } from '@vue/runtime-core'
+import { Logout, Refresh } from '../../libs/services/AuthService'
+
 export default defineComponent({
   methods: {
     logout() {
@@ -13,11 +17,7 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-    import { ComputedRef } from '@vue/reactivity'
-    import {useStore, countdown } from './../../store/authStore'
     import Countdown from './Countdown.vue'
-    import { defineComponent } from '@vue/runtime-core'
-    import { Logout, Refresh } from '../../libs/services/AuthService'
     const isLoggedIn: ComputedRef<boolean> = useStore().isLoggedIn
     const username = useStore().username
     const expiresAt: ComputedRef<Number> = useStore().expiresAt

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-var headerTitle: String = ''
+  var headerTitle: String = ''
 
-function isLabor() {return false}
+  function isLabor() {return false}
 </script>
 
 <template>

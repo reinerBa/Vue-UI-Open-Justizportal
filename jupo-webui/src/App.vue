@@ -1,8 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { config } from './store/configStore'
-import { AppOperator } from './libs/models/app-operator'
-import { AppConfig } from './libs/models/app-config'
 import ConfigService from './libs/services/ConfigService'
 
 export default defineComponent({
