@@ -1,13 +1,33 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { GetAkteneinsichten } from './../../libs/services/AktenService'
 
-const Component = defineComponent({
-  setup() { }
+export default  defineComponent({
+  data(){
+    return {
+    }
+  },
+  mounted(){
+    GetAkteneinsichten().then(response => {
+      this.akteneinsichten.push(...response.data)
+      if (this.akteneinsichten.length === 1) {
+        router.push('/akteneinsicht/'+ this.akteneinsichten[0].id)
+        sessionStorage.setItem('aktenzeichenForPreview', this.akteneinsichten[0].aktenzeichen)
+      }
+    }).catch((error) => {
+      alert(`Ihre Akteneinsicht konnte auf Grund eines Fehlers beim Datenabruf nicht geladen werden. 
+Bitte probieren Sie es später noch einmal. 
+
+Danke für Ihr Verständnis`)
+      router.push('/home')
+    })
+  }
 })
 </script>
 
 <script lang="ts" setup>
   import { Akteneinsicht } from '../../../../src/ressources/model'
+  import router from '../../router'
 
   var akteneinsichten: Array<Akteneinsicht> = []
   var loadingDone: Boolean = false

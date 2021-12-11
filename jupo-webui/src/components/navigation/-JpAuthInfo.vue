@@ -1,9 +1,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-const Component = defineComponent({
+export default  defineComponent({
   mounted(){
     // count down the countdown time
+  },
+  methods:{
+    refreshToken(){
+
+    },
+    logout(){
+
+    }
   }
 })
 </script> 
@@ -12,8 +20,6 @@ const Component = defineComponent({
 const countdown = "00:00" 
 const isLoggedIn = false
 const isRefreshing = true
-function logout(){}
-function refreshToken(){}
 const authInfo = {}
 </script>
 

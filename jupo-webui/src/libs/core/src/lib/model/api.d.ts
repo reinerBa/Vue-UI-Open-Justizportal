@@ -1,4 +1,4 @@
-//declare module WebApi {
+declare module WebApi {
     // ..\jp-core\WebApi\Justizportal.WebApi\DtoModels\DtoAkteneinsicht.cs
     export interface DtoAkteneinsicht {
         id: string;
@@ -83,5 +83,4 @@
         ErrorUserLocked = 'ErrorUserLocked',
         ErrorUnknown = 'ErrorUnknown',
     }
-
-//}
+}

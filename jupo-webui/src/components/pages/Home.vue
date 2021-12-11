@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-var IsLoggedIn: Boolean = false
-var homeWelcomeText: String = "hwt"
+  import { ComputedRef } from '@vue/reactivity'
+  import {useStore, countdown } from './../../store/authStore'
+  const isLoggedIn: ComputedRef<boolean> = useStore().isLoggedIn
+  var homeWelcomeText: String = "hwt"
 
 </script>
 
@@ -14,7 +16,7 @@ var homeWelcomeText: String = "hwt"
   gewährt, erhalten Sie ein Kennwort, das Ihnen den Zugang zur gewünschten Akte eröffnet.
 </p>
 
-<p v-if="IsLoggedIn">
+<p v-if="isLoggedIn">
     <router-link to="/akteneinsichten">Zur elektronischen Akteneinsicht</router-link>
   <!--<a routerLink="/akteneinsichten" routerLinkActive="jp-navigation__link--activated">Zur elektronischen Akteneinsicht</a>-->
 </p>

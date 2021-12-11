@@ -1,10 +1,29 @@
-<script setup>
-import JpMenu from './components/navigation/JpMenu.vue'
-import JpMenuHeader from './components/navigation/JpMenuHeader.vue'
-import JpAuthInfo from './components/navigation/JpAuthInfo.vue'
-import RefreshInfo from './components/auth/RefreshInfo.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { config } from './store/configStore'
+import { AppOperator } from './libs/models/app-operator'
+import { AppConfig } from './libs/models/app-config'
+import ConfigService from './libs/services/ConfigService'
 
-var title = 'jupo!'
+export default defineComponent({
+  async created () {
+    await ConfigService()
+  },
+  computed:{
+    hasConfig (): boolean {
+      return Boolean(config.akteneinsichtenUrl)
+    }
+  }
+})
+</script> 
+
+<script lang="ts" setup>
+  import JpMenu from './components/navigation/JpMenu.vue'
+  import JpMenuHeader from './components/navigation/JpMenuHeader.vue'
+  import RefreshInfo from './components/auth/RefreshInfo.vue'
+  import AuthInfo from './components/auth/AuthInfo.vue'
+
+  var title = 'jupo!'
 </script>
 
 <template>
@@ -20,16 +39,16 @@ var title = 'jupo!'
   <div class="mdl-layout__drawer jp-drawer">
     <JpMenuHeader />
     <div class="jp-divider"></div>
-    <JpAuthInfo />
+    <AuthInfo />
     <div class="jp-divider"></div>
-    <JpMenu/>
+    <JpMenu />
   </div>
   <main class="mdl-layout__content">
-    <div class="jp-main-content">
+    <div v-if="hasConfig" class="jp-main-content">
         <router-view />
     </div>
   </main>
 </div>
 
-<RefreshInfo/>
+<RefreshInfo />
 </template>

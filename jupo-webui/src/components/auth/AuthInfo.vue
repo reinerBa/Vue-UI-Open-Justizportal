@@ -1,8 +1,27 @@
-<script setup>
+<script lang="ts">
+import Vue from 'vue'
+export default defineComponent({
+  methods: {
+    logout() {
+      Logout()
+    },
+    refresh() {
+      Refresh()
+    }
+  }
+})
+</script>
+
+<script lang="ts" setup>
+    import { ComputedRef } from '@vue/reactivity'
+    import {useStore, countdown } from './../../store/authStore'
     import Countdown from './Countdown.vue'
+    import { defineComponent } from '@vue/runtime-core'
+    import { Logout, Refresh } from '../../libs/services/AuthService'
+    const isLoggedIn: ComputedRef<boolean> = useStore().isLoggedIn
+    const username = useStore().username
+    const expiresAt: ComputedRef<Number> = useStore().expiresAt
     var isRefreshing = false
-    const isLoggedIn = () => true   //todo
-    const authInfo = {}
 </script>
 
 <template>
@@ -10,8 +29,8 @@
   <div class="jp-login-info__info-text" v-if="isLoggedIn">
     <div>
     <span>Angemeldet als:&nbsp;</span>
-    <strong id="reference-info">{{ authInfo.username }}</strong><br />
-    <span>Abmeldung in: <Countdown :expiresAt="authInfo.expiresAt" id="countdown-time"/></span>       
+    <strong id="reference-info">{{ username }}</strong><br />
+    <span>Abmeldung in: <Countdown :expiresAt="expiresAt"/> </span>
 <br/>
     <div class="jp-login-info__buttons">
         <button id="refresh_token_button" :disabled="isRefreshing" 
@@ -31,7 +50,7 @@
   <div class="jp-login-info__info-text" v-if="!isLoggedIn">
     <div>Sie sind nicht angemeldet.</div>
     <div>
-      <a routerLink="login" id="login_link">zur Anmeldung</a>
+      <router-link :to="'/login'" id="login_link">zur Anmeldung</router-link>
     </div>
   </div>
 </div>

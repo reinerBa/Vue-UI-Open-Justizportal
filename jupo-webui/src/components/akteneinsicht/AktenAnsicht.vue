@@ -1,49 +1,67 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
+import { GetAkteneinsicht } from './../../libs/services/AktenService'
+import router from '../../router'
+import {Akteneinsicht} from '../../libs/models/akteneinsicht'
+import { Datei, Detail, Preview } from "../../../../src/ressources/model"
+import { AxiosResponse } from 'axios'
+import moment from 'moment'
 
-const Component = defineComponent({
-  emits: {},
-  methods:{
-    download(datei: Datei) {
-        if(!this.akteneinsicht.nurVorschau)
-        this.downloadService.download(datei);
-    },
-    openPreview(pdf: Datei) {
-            this.singlePreview = new Preview(pdf)
-    },
-    closePreview(id: string) {
-        this.singlePreview = null
-        // Nur notwendig wenn pdf Liste sichtbar sein soll
-        const idx = this.openPreviews.findIndex((element: Preview) => element.id === id)
-        this.openPreviews.splice(idx, 1)
-    },
-    transformDate(date: String): String {
-        return date; // todo
+export default defineComponent({
+  props: {
+      id: {type: String, required: true}
+  },
+  data() {
+    return {
+      isReady: false as boolean,
+      akteneinsicht: null as Akteneinsicht,
+      singlePreview: null as Preview,
+      aktenzeichenForPreview: '' as string
     }
   },
-  computed: {
-    hasFullscreen(): Boolean {
-        return Boolean(this.singlePreview)
-    }
+  async mounted(){
+    this.aktenzeichenForPreview = sessionStorage.getItem('aktenzeichenForPreview')
+    await this.getFullAkteneinsicht()
+  },
+  methods: {
+    transformDate(date: string): string {
+      return moment(date).format('DD.MM.yyyy') 
+    },
+    openPreview(pdf: Datei) {
+      this.singlePreview = new Preview(pdf)
+    },
+    closePreview(id: string) {
+      this.singlePreview = null
+    },
+    async getFullAkteneinsicht() {
+      try{
+        let response: AxiosResponse<Akteneinsicht> = await GetAkteneinsicht(this.id)
+        this.akteneinsicht = response.data
+
+        this.isReady = true
+      } catch(error) {
+        alert(`Ihre Akteneinsicht [] konnte auf Grund eines Fehlers beim Datenabruf nicht geladen werden. 
+Bitte probieren Sie es später noch einmal. 
+
+Danke für Ihr Verständnis`)
+        router.push("/home")
+      }
+    },
+
   }
 })
 </script>
 
 <script lang="ts" setup>
-import { Akteneinsicht, Datei, Detail, Preview } from "../../../../src/ressources/model"
-
-  var akteneinsicht: Akteneinsicht = null
-  var aktenzeichenForPreview: String = ''
-  var details: Detail[] = []
-  var openPreviews: Preview[] =[]
-  var singlePreview: Preview
+  import FileInfo from './FileInfo.vue'
+  import DocumentsTable from './DocumentsTable.vue'
 </script>
 
 <template>
     <h2>Aktendaten <span v-if="!akteneinsicht">zu Akte [{{aktenzeichenForPreview}}] werden geladen</span></h2> 
-    <div v-if="!akteneinsicht" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+    <div v-if="!isReady" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
 
-    <div v-if="akteneinsicht" id="gesamtakte_wrapper">
+    <div v-else id="gesamtakte_wrapper">
     <table>
         <tr>
         <td>Aktenzeichen:</td>
@@ -60,51 +78,19 @@ import { Akteneinsicht, Datei, Detail, Preview } from "../../../../src/ressource
         <tr v-if="akteneinsicht.datei && !akteneinsicht.nurVorschau" id="all-record-download-option">
         <td>Gesamtakte:</td>
         <td>
-            <jp-datei-info @download="download(akteneinsicht.datei)" :datei="akteneinsicht.datei"></jp-datei-info>
+          <FileInfo @preview="openPreview" 
+            :datei="akteneinsicht.datei" :downloadRestricted="akteneinsicht.nurVorschau"/>
         </td>
         </tr>
     </table>
     </div>
 
-    <div v-if="akteneinsicht">
-    <h2>Dokumente</h2>
-    <table v-if="akteneinsicht" :hidden="hasFullscreen" class="mdl-data-table mdl-js-data-table jp-table-dokumente">
-        <thead>
-        <tr>
-            <th>Nr.</th>
-            <th>Datum</th>
-            <th>Art</th>
-            <th>Beschreibung</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody v-if="(detail, idx) in details" :key="'records' + idx">
-        <tr class="record-file-row" :class="{'preview-record-file-row' : detail.datei.mimeType == 'application/pdf'}">
-            <td class="record-file-enumeration">{{ detail.nummer }}</td>
-            <td class="record-file-date">{{ transformDate( detail.datum ) }}</td>
-            <td class="record-file-type">{{ detail.art }}</td>
-            <td class="record-file-description">{{ detail.beschreibung }}</td>
-            <td>
-            <jp-datei-info
-                @download="download(detail.datei)"
-                @showPdfSource="openPreview(detail.datei)"
-                v-if="detail.datei"
-                :datei="detail.datei"
-                :downloadRestricted="akteneinsicht.nurVorschau"></jp-datei-info>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    </div>
+    <DocumentsTable v-if="isReady" @preview="openPreview" 
+      :akteneinsicht="akteneinsicht" :singlePreview="!!singlePreview" />
 
-    <jp-pdf-modal :singlePdf="singlePreview" :downloadRestricted="akteneinsicht && akteneinsicht.nurVorschau" @closePdfId="closePreview($event)"></jp-pdf-modal>
-
+  <!--  <jp-pdf-modal :singlePdf="singlePreview" :downloadRestricted="akteneinsicht && akteneinsicht.nurVorschau" @closePdfId="closePreview($event)"></jp-pdf-modal>
+-->
     <!-- for test cases only -->
-    <i v-if="details.length" id="detailsRequestDone" style="display:none;"></i>
-    <i v-if="akteneinsicht != null" id="akteneinsichtRequestDone" style="display:none;"></i>
+    <i v-if="isReady != null" id="akteneinsichtRequestDone" style="display:none;"></i>
 </template>
 
-<style lang="stylus" scoped>
-.jp-table-dokumente
-    margin-bottom 3em
-</style>
