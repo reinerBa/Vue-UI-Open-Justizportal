@@ -1,7 +1,7 @@
-import { stat } from 'fs';
 import moment from 'moment'
 import { reactive, computed, watch, ref, readonly } from "vue"
-import { AuthInfo } from '../libs/models/auth-info';
+import { AuthInfo } from '../libs/models/auth-info'
+import router from '../router';
 const storeName = "jupo-auth-store"
 const storeCotent: AuthInfo = sessionStorage.getItem(storeName) ? JSON.parse(localStorage.getItem(storeName)) : new AuthInfo()
 
@@ -13,6 +13,7 @@ var logoutFunction = () => {
     state.token = ""
     state.expiresAt = 0
     calculateCountdown()
+    router.push('/login')
 }
 //var expiresAt: number= 0
 const _countdown = ref('00:00')

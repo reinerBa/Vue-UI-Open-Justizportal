@@ -21,6 +21,8 @@
     "vite": "^2.6.4",
     "vite-plugin-mock": "^2.9.6",
     "csharp-models-to-typescript": "^0.21.1",
-    "@ffflorian/jszip-cli": "^2.1.4"
+    "@ffflorian/jszip-cli": "^2.1.4",
+    "ts-standard": "^10.0.0",
+    "standard": "16.0.3"
   }
 }

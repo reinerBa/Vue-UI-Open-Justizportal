@@ -7,6 +7,7 @@ import Akteneinsichten from './components/akteneinsicht/AkteneinsichtList.vue'
 import Akteneinsicht from './components/akteneinsicht/AktenAnsicht.vue'
 import Statistic from './components/pages/Statistic.vue'
 import Login from './components/auth/Login.vue'
+import { useStore } from './store/authStore'
 
 const history = createWebHistory();
 const routes = [
@@ -19,6 +20,6 @@ const routes = [
   { path: "/impressum", component: Impressum },
   { path: "/datenschutz", component: Datenschutz },
   { path: "/statistik", component: Statistic }
-];
+]
 const router = createRouter({ history, routes });
 export default router

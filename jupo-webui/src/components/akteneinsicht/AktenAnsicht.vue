@@ -3,9 +3,10 @@ import { defineComponent } from 'vue'
 import { GetAkteneinsicht } from './../../libs/services/AktenService'
 import router from '../../router'
 import {Akteneinsicht} from '../../libs/models/akteneinsicht'
-import { Datei, Detail, Preview } from "../../../../src/ressources/model"
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
+import { Datei } from '../../libs/models/datei'
+import { Preview } from '../../libs/models/preview'
 
 export default defineComponent({
   props: {
@@ -18,6 +19,12 @@ export default defineComponent({
       singlePreview: null as Preview,
       aktenzeichenForPreview: '' as string
     }
+  },
+  beforeRouteEnter(to, from, next){
+    if(!useStore().isLoggedIn.value)
+      next('/login')
+    else 
+      next()
   },
   async mounted(){
     this.aktenzeichenForPreview = sessionStorage.getItem('aktenzeichenForPreview')
@@ -55,6 +62,7 @@ Danke für Ihr Verständnis`)
 <script lang="ts" setup>
   import FileInfo from './FileInfo.vue'
   import DocumentsTable from './DocumentsTable.vue'
+import { useStore } from '../../store/authStore'
 </script>
 
 <template>

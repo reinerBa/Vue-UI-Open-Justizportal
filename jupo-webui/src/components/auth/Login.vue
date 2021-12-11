@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from './../../store/authStore'
-import { config } from './../../store/configStore'
 import { Login } from './../../libs/services/AuthService'
 import { AuthErrorCodes } from '../../libs/models/auth-error-codes'
 import router from '../../router'
@@ -26,12 +25,13 @@ export default defineComponent({
 </script> 
 
 <script lang="ts" setup>
-const username: String = ''
-const hidePW: Boolean = true
+  const username: String = ''
+  const hidePW: Boolean = true
+  const isloggedIn = useStore().isLoggedIn
 </script>
 
 
-<template>
+<template> 
 <form class="jp-login-form" @submit.prevent="onLogin()">
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label jp-textfield jp-login-form__textfield">
     <input id="login_name_input" class="mdl-textfield__input" type="text" autocomplete="username" 

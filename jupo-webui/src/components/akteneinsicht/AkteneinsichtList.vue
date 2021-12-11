@@ -7,6 +7,12 @@ export default  defineComponent({
     return {
     }
   },
+  beforeRouteEnter(to, from, next){
+    if(!useStore().isLoggedIn.value)
+      next('/login')
+    else 
+      next()
+  },
   mounted(){
     GetAkteneinsichten().then(response => {
       this.akteneinsichten.push(...response.data)
@@ -26,8 +32,9 @@ Danke für Ihr Verständnis`)
 </script>
 
 <script lang="ts" setup>
-  import { Akteneinsicht } from '../../../../src/ressources/model'
-  import router from '../../router'
+import router from '../../router'
+import { Akteneinsicht } from '../../libs/models/akteneinsicht'
+import { useStore, isLoggedInPlain } from '../../store/authStore'
 
   var akteneinsichten: Array<Akteneinsicht> = []
   var loadingDone: Boolean = false
