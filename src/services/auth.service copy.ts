@@ -2,7 +2,7 @@ import { AuthResponse } from '../model/auth-response';
 import { AuthInfo } from '../model/auth-info';
 import { ConfigService } from '../contracts';
 import { tap, shareReplay } from 'rxjs/operators';
-import { LocalStoreService } from '../store/local-store.service';
+import { LocalStoreService } from './local-store.service';
 import moment from 'moment'
 import { AuthErrorCodes } from '../model/auth-error-codes';
 import { Router } from '@angular/router';

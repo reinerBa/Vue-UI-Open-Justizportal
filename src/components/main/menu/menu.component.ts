@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '../../../services/interceptors/@angular/core';
 
 @Component({
   selector: 'jp-menu',

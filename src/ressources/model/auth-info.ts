@@ -1,5 +1,5 @@
-import { Moment, Duration, now, duration } from "moment";
-import moment = require("moment");
+import { Moment, Duration, now, duration } from "moment"
+import * as moment from 'moment'
 
 export class AuthInfo {
   token: string;

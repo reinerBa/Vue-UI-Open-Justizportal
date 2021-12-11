@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from "../../services/interceptors/@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { AuthInfoComponent } from "./auth-info/auth-info.component";

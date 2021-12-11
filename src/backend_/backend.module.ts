@@ -1,6 +1,6 @@
-import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '../services/interceptors/@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '../services/interceptors/@angular/common/http';
 
 import { HttpAkteneinsichtService } from './services/http-akteneinsicht.service';
 

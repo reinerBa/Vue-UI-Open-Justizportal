@@ -1,13 +1,11 @@
 import { AuthInfo } from '../ressources/model'
-import moment from 'moment'
+import * as moment from 'moment'
 
 const EXPIRES_AT = 'expiresAt';
 const TOKEN = 'id_token';
 const USER = 'user';
 
-export class LocalStoreService {
-
-  public getAuthInfo(): AuthInfo {
+  export function getAuthInfo(): AuthInfo {
     var authInfo = new AuthInfo();
 
     authInfo.expiresAt = moment(localStorage.getItem(EXPIRES_AT));
@@ -17,7 +15,7 @@ export class LocalStoreService {
     return authInfo;
   } 
 
-  public setAuthInfo(authInfo: AuthInfo) {
+  export function setAuthInfo(authInfo: AuthInfo) {
     if(authInfo) {
       localStorage.setItem(USER, authInfo.username);
       localStorage.setItem(TOKEN, authInfo.token);
@@ -27,9 +25,9 @@ export class LocalStoreService {
     }
   }
 
-  public clearAuthInfo() {
+  export function clearAuthInfo() {
     localStorage.removeItem(USER);
     localStorage.removeItem(TOKEN);
     localStorage.removeItem(EXPIRES_AT);
   }
-}
+

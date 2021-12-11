@@ -7,7 +7,7 @@ import { HttpClient } from './interceptors/@angular/common/http';
 import { ConfigService } from '../contracts';
 import { AppConfig } from '../model';
 import { tap, shareReplay } from 'rxjs/operators';
-import { LocalStoreService } from '../store/local-store.service';
+import { LocalStoreService } from './local-store.service';
 import moment from 'moment'
 import { AuthErrorCodes } from '../model/auth-error-codes';
 import { Router } from '@angular/router';
@@ -89,7 +89,7 @@ export class AuthService {
   }
 
   private storeAuthResponse(username: string, response: AuthResponse) : void {
-    const authInfo: AuthInfo = new AuthInfo();
+    const authInfo: LOGIN = new AuthInfo();
 
     authInfo.username = username;
     authInfo.token = response.authInfo.token;

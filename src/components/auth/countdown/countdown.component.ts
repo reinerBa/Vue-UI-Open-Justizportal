@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from '../../../services/interceptors/@angular/core';
 import { Moment, Duration, duration, now } from 'moment';
-import { BehaviorSubject, Observable, timer, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, timer, Subscription } from '../../../services/interceptors/rxjs';
 
 @Component({
   selector: 'jp-countdown',

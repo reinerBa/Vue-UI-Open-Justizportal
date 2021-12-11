@@ -1,12 +1,25 @@
 import { reactive } from 'vue';
 import { createStore, ActionContext } from 'vuex'
-import { PortalState, AppOperator, AppConfig } from '../core/model'
+import { AppConfig, AppOperator } from '../ressources/model';
+import { appstate } from './modules/Appstate/appstate';
+
+export interface IRootState {
+  version: string;
+}
 
 export interface AppState {
   title: string,
   appConfig: AppConfig,
   appOperator: AppOperator
 }
+
+export const store = createStore({
+  modules: {
+    state: appstate,
+    auth: authModule,
+    akten: aktenModule
+  }
+})
 
 export default createStore<AppState>({
   state: {
