@@ -1,23 +1,21 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { GetAkteneinsichten } from './../../libs/services/AktenService'
+import { defineComponent, inject, reactive, ref } from 'vue'
+import { AktenService, AktenServiceKey } from './../../libs/services/AktenService'
+import { AuthStore, AuthStoreKey } from '../../store/authStore'
 
 export default  defineComponent({
-  data(){
-    return {
-    }
-  },
   beforeRouteEnter(to, from, next){
-    if(!useStore().isLoggedIn.value)
+    if(!AuthStore.IsLoggedIn())
       next('/login')
     else 
       next()
   },
   mounted(){
-    GetAkteneinsichten().then(response => {
+    this.aktenService.GetAkteneinsichten().then(response => {
       this.akteneinsichten.push(...response.data)
       if (this.akteneinsichten.length === 1) {
-        router.push('/akteneinsicht/'+ this.akteneinsichten[0].id)
+        this.$router.push('/akteneinsicht/'+ this.akteneinsichten[0].id)
+        this.isReady = true
         sessionStorage.setItem('aktenzeichenForPreview', this.akteneinsichten[0].aktenzeichen)
       }
     }).catch((error) => {
@@ -25,33 +23,31 @@ export default  defineComponent({
 Bitte probieren Sie es später noch einmal. 
 
 Danke für Ihr Verständnis`)
-      router.push('/home')
+      this.$router.push('/home')
     })
   }
 })
 </script>
 
 <script lang="ts" setup>
-import router from '../../router'
-import { Akteneinsicht } from '../../libs/models/akteneinsicht'
-import { useStore, isLoggedInPlain } from '../../store/authStore'
-
-  var akteneinsichten: Array<Akteneinsicht> = []
-  var loadingDone: Boolean = false
+  const isReady = ref(false)
+  const akteneinsichten: Array<WebApi.DtoAkteneinsicht> = reactive([])
+  const aktenService: AktenService = inject(AktenServiceKey) as AktenService
+  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
 </script>
 
 <template>
   <div>
     <h2 class="list-of-records-title">Ihre Akteneinsichten
-        <span v-if="loadingDone">:</span>
+        <span v-if="isReady">:</span>
         <span v-else> werden geladen</span>
     </h2>
 
-    <div v-if="!loadingDone" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+    <loading-bar v-if="!isReady" />
 
     <ul>
     <li v-for="(akteneinsicht, idx) in akteneinsichten" :key="'akteneinsichten'+ idx">
-        <router-link :to="'/akteneinsichten/' + akteneinsicht.id">
+        <router-link :to="'/akteneinsicht/' + akteneinsicht.id">
             {{ akteneinsicht.aktenzeichen }}
         </router-link>
     </li>  

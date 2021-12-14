@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default ({ command }: ConfigEnv): UserConfigExport => {
   return {
+    server: {open: true},
     plugins: [
       vue(),
       viteMockServe({

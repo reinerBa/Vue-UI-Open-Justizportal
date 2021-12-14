@@ -1,8 +1,10 @@
 <script lang="ts" setup>
   import { ComputedRef } from '@vue/reactivity'
-  import {useStore, countdown } from './../../store/authStore'
-  const isLoggedIn: ComputedRef<boolean> = useStore().isLoggedIn
+import { inject } from '@vue/runtime-core'
+  import { AuthStoreKey, AuthStore } from './../../store/authStore'
   var homeWelcomeText: String = "hwt"
+  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+  const {isLoggedIn } = authStore.useStore()
 
 </script>
 

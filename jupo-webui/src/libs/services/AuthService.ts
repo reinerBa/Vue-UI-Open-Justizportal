@@ -1,18 +1,69 @@
 import { AuthResponse } from '../models/auth-response'
-import { AuthInfo } from '../models/auth-info';
+import { AuthInfo } from '../models/auth-info'
 import moment from 'moment'
-import { AuthErrorCodes } from '../models/auth-error-codes';
+import { AuthErrorCodes } from '../models/auth-error-codes'
 import axios, { AxiosResponse } from 'axios'
-import { config } from '../../store/configStore'
-import { useStore } from '../../store/authStore'
+import { InjectionKey } from 'vue'
+import { JpHttpServiceAbstract } from './JpHttpServiceAbstract'
 
-interface AuthRequest {
-  username: string;
-  password: string;
+export const AuthServiceKey: InjectionKey<AuthService> = Symbol('AuthService')
+
+export class AuthService  extends JpHttpServiceAbstract{
+
+  private _lastErrorInfo: ''
+  public LastErrorInfo() { return this._lastErrorInfo }
+
+  public async Login(userName: string, password: string): Promise<AuthErrorCodes>{
+    const authRequest: WebApi.LoginInformations = {
+      username: userName,
+      password: password
+    }
+  
+    let response = await axios.post<AuthResponse>(this.GetConfig().tokenUrl, authRequest)
+    let data = response.data
+    if (response.status === 200 && data.returnCode === AuthErrorCodes.Ok) {
+
+      this._token = data.authInfo.token
+      let rValue = new AuthInfo({
+        token: data.authInfo.token, 
+        username: userName, 
+        expiresAt: moment.now() + data.authInfo.expiresIn * 1e3
+      })
+      this._authStore.setAuthInfo(rValue)
+    }
+  
+    return response.data.returnCode as AuthErrorCodes  
+  }
+
+  public async Refresh(): Promise<AuthErrorCodes> { // Promise<AxiosResponse<AuthResponse>> {
+    let response = await axios.get<AuthResponse>(this.GetConfig().tokenUrl + '/refresh', this.GetHeaders())
+  
+    if (response.status === 200) {
+      let data = response.data
+      this._authStore.ResetTimer(data.authInfo.token, data.authInfo.expiresIn)
+    } 
+  
+    return response.data.returnCode as AuthErrorCodes
+  }
+
+  Logout(): void {
+    this._authStore.logout()
+  }
+
+  public async verifyStatisticPassword (password: string): Promise<boolean>{
+    try{
+      let response = await axios.post(this.GetConfig().statisticUrl + "verifyPassword/"+ password)
+    if(response)
+      return true
+    }catch(e){
+      console.error(e)
+    }
+    return false
+  }
 }
-
+/*
 export async function Login(userName: string, password: string): Promise<AuthErrorCodes> {//Promise<AxiosResponse<AuthResponse>> {
-  const authRequest: AuthRequest = {
+  const authRequest: LoginInformations = {
     username: userName,
     password: password
   }
@@ -49,8 +100,8 @@ export async function Refresh(): Promise<AuthErrorCodes> { // Promise<AxiosRespo
   .catch((error) => {
     return false
   }) */
-}
-
+// }
+/*
 export function Logout(): void {
   useStore().logout()
 }

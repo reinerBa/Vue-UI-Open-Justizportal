@@ -1,12 +1,10 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { GetAkteneinsicht } from './../../libs/services/AktenService'
-import router from '../../router'
-import {Akteneinsicht} from '../../libs/models/akteneinsicht'
+import { defineComponent, inject } from 'vue'
+import { AktenService, AktenServiceKey } from './../../libs/services/AktenService'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
-import { Datei } from '../../libs/models/datei'
 import { Preview } from '../../libs/models/preview'
+import { AuthStore, AuthStoreKey } from '../../store/authStore'
 
 export default defineComponent({
   props: {
@@ -15,13 +13,13 @@ export default defineComponent({
   data() {
     return {
       isReady: false as boolean,
-      akteneinsicht: null as Akteneinsicht,
+      akteneinsicht: null as WebApi.DtoAkteneinsicht,
       singlePreview: null as Preview,
       aktenzeichenForPreview: '' as string
     }
   },
   beforeRouteEnter(to, from, next){
-    if(!useStore().isLoggedIn.value)
+    if(!AuthStore.IsLoggedIn())
       next('/login')
     else 
       next()
@@ -34,7 +32,7 @@ export default defineComponent({
     transformDate(date: string): string {
       return moment(date).format('DD.MM.yyyy') 
     },
-    openPreview(pdf: Datei) {
+    openPreview(pdf: WebApi.DtoDatei) {
       this.singlePreview = new Preview(pdf)
     },
     closePreview(id: string) {
@@ -42,7 +40,7 @@ export default defineComponent({
     },
     async getFullAkteneinsicht() {
       try{
-        let response: AxiosResponse<Akteneinsicht> = await GetAkteneinsicht(this.id)
+        let response: AxiosResponse<WebApi.DtoAkteneinsicht> = await this.aktenService.GetAkteneinsicht(this.id)
         this.akteneinsicht = response.data
 
         this.isReady = true
@@ -51,9 +49,9 @@ export default defineComponent({
 Bitte probieren Sie es später noch einmal. 
 
 Danke für Ihr Verständnis`)
-        router.push("/home")
+        this.$router.push("/home")
       }
-    },
+    }
 
   }
 })
@@ -62,14 +60,16 @@ Danke für Ihr Verständnis`)
 <script lang="ts" setup>
   import FileInfo from './FileInfo.vue'
   import DocumentsTable from './DocumentsTable.vue'
-import { useStore } from '../../store/authStore'
+  import PDFModal from './PDFModal.vue'
+  const aktenService: AktenService = inject<AktenService>(AktenServiceKey)
+  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
 </script>
 
 <template>
-    <h2>Aktendaten <span v-if="!akteneinsicht">zu Akte [{{aktenzeichenForPreview}}] werden geladen</span></h2> 
-    <div v-if="!isReady" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+  <h2>Aktendaten <span v-if="!akteneinsicht">zu Akte [{{aktenzeichenForPreview}}] werden geladen</span></h2> 
 
-    <div v-else id="gesamtakte_wrapper">
+  <loading-bar v-if="!isReady" />
+  <div v-else id="gesamtakte_wrapper">
     <table>
         <tr>
         <td>Aktenzeichen:</td>
@@ -91,14 +91,16 @@ import { useStore } from '../../store/authStore'
         </td>
         </tr>
     </table>
-    </div>
+  </div>
 
-    <DocumentsTable v-if="isReady" @preview="openPreview" 
-      :akteneinsicht="akteneinsicht" :singlePreview="!!singlePreview" />
+  <DocumentsTable v-if="isReady" @preview="openPreview" 
+    :akteneinsicht="akteneinsicht" :singlePreview="!!singlePreview" />
 
-  <!--  <jp-pdf-modal :singlePdf="singlePreview" :downloadRestricted="akteneinsicht && akteneinsicht.nurVorschau" @closePdfId="closePreview($event)"></jp-pdf-modal>
--->
-    <!-- for test cases only -->
-    <i v-if="isReady != null" id="akteneinsichtRequestDone" style="display:none;"></i>
+  <PDFModal v-if="singlePreview" :PDF2display="singlePreview" 
+    :downloadRestricted="akteneinsicht && !!akteneinsicht.nurVorschau" 
+    @close-preview="singlePreview = null" />
+
+  <!-- for test cases only -->
+  <i v-if="isReady" id="akteneinsichtRequestDone" style="display:none;"></i>
 </template>
 

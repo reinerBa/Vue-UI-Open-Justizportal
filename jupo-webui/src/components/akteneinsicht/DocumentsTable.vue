@@ -1,13 +1,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { PropType } from '@vue/runtime-core'
-import { GetDetails } from './../../libs/services/AktenService'
-import {Akteneinsicht} from '../../libs/models/akteneinsicht'
-import { Datei, Detail, Preview } from "../../../../src/ressources/model"
+import { inject, PropType } from '@vue/runtime-core'
+import { AktenService, AktenServiceKey } from './../../libs/services/AktenService'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
 
-function sortDetails(d1: Detail, d2: Detail): number {
+function sortDetails(d1: WebApi.DtoDetail, d2: WebApi.DtoDetail): number {
   if(d1.nummer < d2.nummer) {
     return -1
   } else {
@@ -17,13 +15,13 @@ function sortDetails(d1: Detail, d2: Detail): number {
 
 export default defineComponent({
   props: {
-    akteneinsicht: {type: Object as PropType<Akteneinsicht>, required: true},
+    akteneinsicht: {type: Object as PropType<WebApi.DtoAkteneinsicht>, required: true},
     singlePreview: {type: Boolean, required: true}
   },
   emits: ['preview'],
   data() {
     return {
-      details: [] as Array<Detail>,
+      details: [] as Array<WebApi.DtoDetail>,
       isReady: false
     }
   },
@@ -36,7 +34,7 @@ export default defineComponent({
     },
     async getDetails( ) {
         try { 
-          let response: AxiosResponse<Array<Detail>> = await GetDetails(this.akteneinsicht)
+          let response: AxiosResponse<Array<WebApi.DtoDetail>> = await this.aktenService.GetDetails(this.akteneinsicht)
             let details = response.data
             this.details.push(...details.sort(sortDetails))
             this.isReady = true
@@ -53,11 +51,12 @@ Danke für Ihr Verständnis`)
 
 <script lang="ts" setup>
   import FileInfo from './FileInfo.vue'
+  const aktenService: AktenService = inject(AktenServiceKey) as AktenService
 </script>
 
 <template>
     <h2>Dokumente</h2>
-    <div v-if="!isReady" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+    <loading-bar v-if="!isReady" />
     <table v-else v-show="!singlePreview" class="mdl-data-table mdl-js-data-table jp-table-dokumente">
         <thead>
         <tr>

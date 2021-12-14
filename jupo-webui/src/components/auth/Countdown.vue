@@ -1,8 +1,10 @@
 <script lang="ts">
-import moment, { DurationInputArg2 } from 'moment'
-import { ComputedRef } from '@vue/reactivity'
-import { defineComponent } from '@vue/runtime-core'
-import {useStore, countdown } from './../../store/authStore'
+import moment from 'moment'
+import { Ref } from '@vue/reactivity'
+import { defineComponent, inject } from '@vue/runtime-core'
+import { AuthStoreKey, AuthStore } from './../../store/authStore'
+import router from '../../router'
+import { useNow } from '@vueuse/core'
 
 var intervalHandler: NodeJS.Timeout = null
 
@@ -13,35 +15,27 @@ export default defineComponent({
       required: true
     }
   },
-  mounted(){
-    this.now = moment.now()
-    intervalHandler = setInterval(()=>{
-      this.now = moment.now()
-    }, 498)
-  },
-  unmounted(){
-    clearInterval(intervalHandler)
-  },
-  data() {
-    return {
-      now: 0
-    }
-  },
   methods:{
-    diff (now: bigint, expiresAt: bigint) {
-      var differenceTime = expiresAt - now
+    countdownTime(nowDate: Date): string{
+      var differenceTime = this.expiresAt - (nowDate ).getTime()
       if(differenceTime < 0){
-        useStore().logout()
+        this.authStore.logout()
+        router.push('/login')
       } 
 
-      let duration = moment.duration((differenceTime as any), 'milliseconds')
+      let duration: moment.Duration = moment.duration((differenceTime as any), 'milliseconds')
       let secounds: String = duration.seconds().toString().length == 1 ? `0${duration.seconds()}` : duration.seconds().toString()
       return `${duration.minutes()}:${secounds}`
     }
   }
 })
 </script> 
+<script lang="ts" setup>
+    const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+    const {expiresAt} = authStore.useStore()
+    const nowDate: Ref<Date> = useNow()
+</script>
 
 <template>
-    <span id="countdown-time">{{diff(now, expiresAt)}}</span>
+    <span id="countdown-time">{{countdownTime(nowDate)}}</span>
 </template>

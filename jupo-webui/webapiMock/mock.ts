@@ -4,8 +4,8 @@ export default [
     {
         url: '/webapi/token',
         method: 'post',
-        response: ({ username, password }) => {
-          if(username === "fail") return {returnCode: "ERROR_WRONG_CREDENTIALS"}
+        response: ({url, body, query, headers}) => {
+          if(body.username === "fail") return {returnCode: "ERROR_WRONG_CREDENTIALS"}
           
           return {
               returnCode: "OK",
@@ -88,7 +88,7 @@ export default [
     },
   },
   {
-    url: '/webapi/monitoring/verifyPassword/.*',
+    url: '/webapi/monitoring/verifyPassword/1',
     method: 'post',
     response: "true",
   },

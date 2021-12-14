@@ -1,15 +1,29 @@
 <script lang="ts" setup>
-  function refresh(){}
-  function resetTimer(){}
+import { Ref, ref } from "@vue/reactivity"
+import { inject } from "@vue/runtime-core"
+import { useIntervalFn, useNow } from "@vueuse/core"
+import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
+import { AuthStore, AuthStoreKey } from "../../store/authStore"
+  const SECONDS = 60e3
+  const showSnackbar = ref(false)
 
-  var _updateTimerSub = null
-  var SnackbarVisible = false
-  var ShowSnackbar = false
-  var SECONDS = 60
+  const authService: AuthService= inject<AuthService>(AuthServiceKey)
+  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+  const {expiresAt, isLoggedIn} = authStore.useStore()
+  
+  useIntervalFn(() => {
+    let diff = expiresAt.value - Date.now()
+    showSnackbar.value = isLoggedIn.value && diff < SECONDS
+  }, 100)
+
+  async function refresh(){
+    showSnackbar.value = false
+    await authService.Refresh()
+  }
 </script>
 
 <template>
-  <div v-if="SnackbarVisible" class="mdl-snackbar" :class="{'mdl-snackbar--active': ShowSnackbar }">
+  <div v-if="showSnackbar" class="mdl-snackbar" :class="{'mdl-snackbar--active': showSnackbar }">
     <div class="mdl-snackbar__text">
       Achtung, Ihre Sitzung läuft bald ab!
     </div>

@@ -1,27 +1,34 @@
 <script lang="ts">
-import { ComputedRef } from '@vue/reactivity'
-import { useStore } from './../../store/authStore'
-import { defineComponent } from '@vue/runtime-core'
-import { Logout, Refresh } from '../../libs/services/AuthService'
+import { ref } from '@vue/reactivity'
+import { AuthStore, AuthStoreKey } from './../../store/authStore'
+import { defineComponent, inject } from '@vue/runtime-core'
+import { AuthService, AuthServiceKey } from '../../libs/services/AuthService'
 
 export default defineComponent({
   methods: {
-    logout() {
-      Logout()
+    async logout() {
+      await this.authService.Logout()
+      router.push('/login')
     },
-    refresh() {
-      Refresh()
+    async refresh() {
+      let result
+      try{
+        result = await this.authService.Refresh()
+      }catch(e){}
+      if (result !== 'OK') 
+        alert('Ihre Anmeldung konnte nicht verlängert werden')
     }
   }
 })
 </script>
 
 <script lang="ts" setup>
+    import router from '../../router'
     import Countdown from './Countdown.vue'
-    const isLoggedIn: ComputedRef<boolean> = useStore().isLoggedIn
-    const username = useStore().username
-    const expiresAt: ComputedRef<Number> = useStore().expiresAt
-    var isRefreshing = false
+    const authService: AuthService = inject(AuthServiceKey) as AuthService
+    const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+    const {expiresAt, username, isLoggedIn } = authStore.useStore()
+    const isRefreshing = ref(false)
 </script>
 
 <template>
@@ -31,7 +38,7 @@ export default defineComponent({
     <span>Angemeldet als:&nbsp;</span>
     <strong id="reference-info">{{ username }}</strong><br />
     <span>Abmeldung in: <Countdown :expiresAt="expiresAt"/> </span>
-<br/>
+    <br/>
     <div class="jp-login-info__buttons">
         <button id="refresh_token_button" :disabled="isRefreshing" 
           class="mdl-button mdl-js-button mdl-button--raised jp-login-info__refresh-button jp-changeable-button" @click="refresh()">

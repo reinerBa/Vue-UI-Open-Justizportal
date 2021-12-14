@@ -5,9 +5,8 @@ import Contact from "./components/pages/Contact.vue"
 import Impressum from "./components/pages/Impressum.vue"
 import Akteneinsichten from './components/akteneinsicht/AkteneinsichtList.vue'
 import Akteneinsicht from './components/akteneinsicht/AktenAnsicht.vue'
-import Statistic from './components/pages/Statistic.vue'
+import Statistic from './components/Statistic/Statistic.vue'
 import Login from './components/auth/Login.vue'
-import { useStore } from './store/authStore'
 
 const history = createWebHistory();
 const routes = [
