@@ -1,6 +1,7 @@
+<script lang="ts">export default defineComponent({})</script>
 <script lang="ts" setup>
 import { Ref, ref } from "@vue/reactivity"
-import { inject } from "@vue/runtime-core"
+import { defineComponent, inject } from "@vue/runtime-core"
 import { useIntervalFn, useNow } from "@vueuse/core"
 import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
 import { AuthStore, AuthStoreKey } from "../../store/authStore"

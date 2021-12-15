@@ -2,7 +2,7 @@
   import { ComputedRef } from '@vue/reactivity'
 import { inject } from '@vue/runtime-core'
   import { AuthStoreKey, AuthStore } from './../../store/authStore'
-  var homeWelcomeText: String = "hwt"
+  var homeWelcomeText: String = "Akteneinsichtsportal Rheinland-Pfalz"
   const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
   const {isLoggedIn } = authStore.useStore()
 

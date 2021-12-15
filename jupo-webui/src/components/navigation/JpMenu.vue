@@ -1,5 +1,6 @@
-<script setup>
-
+<script lang="ts">
+import { defineComponent } from "@vue/runtime-core"
+export default defineComponent({})
 </script>
 
 <template>
@@ -11,6 +12,3 @@
   <router-link to="/datenschutz" class="mdl-navigation__link jp-navigation__link">Datenschutz</router-link>
 </nav>
 </template>
-
-<style scoped>
-</style>

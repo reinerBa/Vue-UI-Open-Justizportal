@@ -1,7 +1,8 @@
 <script lang="ts">
-import { defineComponent, provide, InjectionKey } from 'vue'
+import { defineComponent, provide, InjectionKey, computed } from 'vue'
 import { config } from './store/configStore'
 import ConfigService from './libs/services/ConfigService'
+import {useRoute} from 'vue-router'
 
 export default defineComponent({
   async beforeCreate () {
@@ -27,6 +28,8 @@ import { AuthStore, AuthStoreKey } from './store/authStore'
 import { StatisticService, StatisticServiceKey } from './libs/services/StatisticService'
 
   var title = 'jupo!'
+  const route=useRoute()
+  const path = computed(() =>route.path)
   const authStore = new AuthStore()
   provide(AuthStoreKey, authStore)
 
@@ -46,7 +49,7 @@ import { StatisticService, StatisticServiceKey } from './libs/services/Statistic
 
   <header class="mdl-layout__header jp-header">
     <div class="mdl-layout__header-row">
-      <span class="mdl-layout-title jp-header__title">{{ title }}</span>
+      <span class="mdl-layout-title jp-header__title">{{ path }}</span>
       <div class="mdl-layout-spacer"></div>
     </div>
   </header>

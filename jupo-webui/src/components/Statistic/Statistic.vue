@@ -26,6 +26,7 @@ function orderGroups(events: Array<WebApi.DtOStatistic>): Array<Array<WebApi.DtO
 }
 
 export default defineComponent({
+  components: { DaySum, HourSum },
   mounted(){
     let today = moment()
     this.endDate = today.format("YYYY-MM-DD")
@@ -41,7 +42,7 @@ export default defineComponent({
     },
   async loadData(){ 
     let response = await this.statisticService.getNutzungsstatistiken({password: this.password, startDate: this.startDate, endDate: this.endDate})
-    this.lastStatisticResponse.splice(0, 9e9).push(...response.data)
+    this.lastStatisticResponse.splice(0, 9e9, ...response.data)
 
     let eventData = orderGroups(this.lastStatisticResponse)
     this.usageDays.splice(0, 9e9) 
@@ -87,6 +88,8 @@ export default defineComponent({
     const password = ref('')
 
   import StatisticLogin from './StatisticLogin.vue'
+import DaySum from "./DaySum.vue"
+import HourSum from "./HourSum.vue"
 </script>
 
 <template>
@@ -106,29 +109,11 @@ export default defineComponent({
     <label class="pad1em"><input type="radio" name="precision" value="h" v-model="precision"/> Stundenweise</label>
     <button class="pad1em" @click="loadData()">Aktualisieren</button>
   </p>
-{{usageDays}}
-<div v-if="precision=='h'">
-  <h5>Stundensummen</h5>
 
-<div v-for="(value, key) in usagesTable" :key="'stundensummen' + key"> 
-  <table class="jp-stat-table">
-    <thead><th></th></thead>
-    <thead><th>{{key}}</th></thead>
-    <thead><th></th>        
-      <th v-for="hour in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]" :key="'hour1' + hour">{{hour}}</th>
-    </thead>
-    <tbody v-for="(value2, key2) in value" :key="'stdDetail'+ key2">
-      <tr>
-        <td>{{key2}}</td>
-        <td v-for="hour in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]" :key="'hour' + hour">
-            {{value2[hour]}}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
-<div v-if="precision=='d'">
+<HourSum v-if="precision=='h'" :usagesTable="usagesTable"/>
+<DaySum v-if="precision=='d'" :usageDays="usageDays"/>
+<div >
+  
   <h5>Tagessummen</h5>
   <table v-for="(dayStat, idx) in usageDays" :key="'dayStat' + idx">
     <tbody>
@@ -139,7 +124,7 @@ export default defineComponent({
 </div>    
 </template>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .pad1em 
     padding 1rem
 

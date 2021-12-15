@@ -95,9 +95,9 @@ export default [
   {
     url: '/webapi/monitoring/usageStatistic',
     method: 'post',
-    response: ({password, startDate, endDate }) => {
+    response: ({url, body, query, headers}) => {
         // var d = moment().subtract(1, 'day')
-        let day = startDate
+        let day = body.startDate
         return [
         {
             "hour": 8, day,
