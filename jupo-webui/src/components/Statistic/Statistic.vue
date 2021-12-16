@@ -27,6 +27,19 @@ function orderGroups(events: Array<WebApi.DtOStatistic>): Array<Array<WebApi.DtO
 
 export default defineComponent({
   components: { DaySum, HourSum },
+  data(){
+    return {
+      startDate: '',
+      endDate: '',
+      precision: 'h',
+      isLoading: false,
+      password: '',
+      loginDone: false,
+      usageDays: [] as Array<string>,
+      lastStatisticResponse: [] as Array<WebApi.DtOStatistic>,
+      usagesTable: {}
+    }
+  },
   mounted(){
     let today = moment()
     this.endDate = today.format("YYYY-MM-DD")
@@ -46,25 +59,25 @@ export default defineComponent({
 
     let eventData = orderGroups(this.lastStatisticResponse)
     this.usageDays.splice(0, 9e9) 
-    this.usagesTable = {}
+    for (let key in this.usagesTable) delete this.usagesTable[key]
       
     eventData.forEach(action => {
-      let daySet : object = {}
+      let daySet : Map<string, number> = new Map<string, number>()
       let dayList : object = {}
       let daySetName: Array<string> = []
       action.forEach(event => {
         let slotName =`${event.day}: ${event.controller} ${event.action}`
-        if (daySet[slotName] == null) {
-          daySet[slotName] = event.count
+        if (daySet.has(slotName)) {
+          daySet.set(slotName, daySet.get(slotName) + event.count)
+          dayList[event.day][event.hour] = event.count
+        } else {
+          daySet.set(slotName, event.count)
           dayList[event.day] = {[event.hour]: event.count}
           daySetName.push(slotName)
-        } else {
-          daySet[slotName] = daySet[slotName] + event.count
-          dayList[event.day][event.hour] = event.count
         }
       })
 
-      this.usageDays.push(...daySetName.map(name => name +": "+ daySet[name]))
+      this.usageDays.push(...daySetName.map(name => name +": "+ daySet.get(name)))
       this.usagesTable[`${action[0].controller} ${action[0].action}`] = dayList
     })
   }
@@ -73,29 +86,15 @@ export default defineComponent({
 
 <script lang="ts" setup>
   import { StatisticService, StatisticServiceKey } from "../../libs/services/StatisticService"
-  import { reactive, ref } from '@vue/reactivity'
   import moment from 'moment'
-  const statisticService: StatisticService = inject<StatisticService>(StatisticServiceKey)
-    
-    const startDate = ref('')
-    const endDate = ref('')
-    const precision = ref('h')
-    const isLoading = ref(false)
-    const usagesTable = reactive([])
-    const usageDays: Array<string> = reactive([])
-    const lastStatisticResponse: Array<WebApi.DtOStatistic> = reactive([])
-    const loginDone = ref(false)
-    const password = ref('')
-
   import StatisticLogin from './StatisticLogin.vue'
-import DaySum from "./DaySum.vue"
-import HourSum from "./HourSum.vue"
+  import DaySum from "./DaySum.vue"
+  import HourSum from "./HourSum.vue"
+  const statisticService: StatisticService = inject<StatisticService>(StatisticServiceKey)
 </script>
 
 <template>
-<h2>
-  Nutzungsauswertung
-</h2>
+<h2>Nutzungsauswertung</h2>
 
 <StatisticLogin v-if="!loginDone" @access-password="loginSuccess"/>
 
@@ -103,25 +102,16 @@ import HourSum from "./HourSum.vue"
   <p>
     <label class="pad1em">Von: <input v-model="startDate" type="date"></label>&emsp;
     <label class="pad1em">Bis: <input v-model="endDate" type="date"></label>&emsp; 
+    <button class="pad1em" @click="loadData()">Aktualisieren</button>
   </p>
   <p>
     <label class="pad1em"><input type="radio" name="precision" value="d" v-model="precision"/> Tageweise</label>
     <label class="pad1em"><input type="radio" name="precision" value="h" v-model="precision"/> Stundenweise</label>
-    <button class="pad1em" @click="loadData()">Aktualisieren</button>
   </p>
 
-<HourSum v-if="precision=='h'" :usagesTable="usagesTable"/>
-<DaySum v-if="precision=='d'" :usageDays="usageDays"/>
-<div >
-  
-  <h5>Tagessummen</h5>
-  <table v-for="(dayStat, idx) in usageDays" :key="'dayStat' + idx">
-    <tbody>
-      <tr><td>{{dayStat}}</td></tr>
-    </tbody>
-  </table>
+  <HourSum v-if="precision=='h'" :usagesTable="usagesTable"/>
+  <DaySum v-if="precision=='d'" :usageDays="usageDays"/>
 </div>
-</div>    
 </template>
 
 <style lang="stylus">

@@ -1,18 +1,18 @@
-<script setup>
-    function operator(){
-        return {}
-    }
+<script lang="ts" setup>
+import { inject } from "@vue/runtime-core"
+ const operator = inject('operatorConfig')
 </script>
+
 
 <template>
     <h3>Diensteanbieter im Sinne des Telemediengesetzes ist das:</h3>
     <p>
-    {{operator.name}}<br />
-    {{operator.street}}<br />
-    {{operator.town}}<br />
-    {{operator.phone}}<br />
-    {{operator.fax}}<br />
-    E-Mail: <a href="{{'mailto:' + operator.email}}" class="operator-email-link impressum-content">{{operator.email}}</a><br />
+    {{operator.impressum.name}}<br />
+    {{operator.impressum.street}}<br />
+    {{operator.impressum.town}}<br />
+    {{operator.impressum.phone}}<br />
+    {{operator.impressum.fax}}<br />
+    E-Mail: <a :href="'mailto:' + operator.impressum.email" class="operator-email-link impressum-content">{{operator.impressum.email}}</a><br />
     </p>
     <p id="license-notice">© 2019 Oberverwaltungsgericht Rheinland-Pfalz, lizenziert unter der 
     <a href="https://joinup.ec.europa.eu/sites/default/files/inline-files/EUPL%20v1_2%20DE.txt">EUPL Version 1.2</a>. 

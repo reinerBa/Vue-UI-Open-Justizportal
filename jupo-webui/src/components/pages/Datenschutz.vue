@@ -1,6 +1,21 @@
-<script setup>
-    var dataProtectionHtml = '';
-    function useDefault(){return true}
+
+<script lang="ts">
+import { defineComponent, inject, ref } from "@vue/runtime-core";
+import { useFetch } from "@vueuse/core";
+import { AppOperator } from "src/libs/models/app-operator";
+
+export default defineComponent({
+    computed:{
+        useDefault() : boolean {
+            return this.operator?.privacyPolicyUrl == null ? true : this.operator.privacyPolicyUrl === 'default'
+        }
+    }
+})
+</script>
+<script lang="ts" setup>
+    const operator = inject('operatorConfig') as AppOperator
+    const { data } = useFetch(operator.privacyPolicyUrl).post().text()
+    const dataProtectionHtml = ref(data)   
 </script>
 
 <template>

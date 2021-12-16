@@ -2,16 +2,15 @@
   import { ComputedRef } from '@vue/reactivity'
 import { inject } from '@vue/runtime-core'
   import { AuthStoreKey, AuthStore } from './../../store/authStore'
-  var homeWelcomeText: String = "Akteneinsichtsportal Rheinland-Pfalz"
   const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
   const {isLoggedIn } = authStore.useStore()
 
+ const operator = inject('operatorConfig')
 </script>
-
 <template>
 <h2>
   Herzlich willkommen
-  {{homeWelcomeText}}
+  {{operator.homeWelcomeText}}
 </h2>
 <p>
   Hier können Sie Akteneinsicht nehmen. Die Akteneinsicht muss vorher bei Gericht beantragt werden. Wird die Einsicht

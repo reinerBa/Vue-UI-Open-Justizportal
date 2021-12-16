@@ -10,15 +10,15 @@ import Login from './components/auth/Login.vue'
 
 const history = createWebHistory();
 const routes = [
-  { path: "/", component: Login },
-  { path: "/home", component: Home },
-  { path: "/login", component: Login },
-  { path: "/akteneinsichten", component: Akteneinsichten },
-  { path: "/akteneinsicht/:id", component: Akteneinsicht, props: true },
-  { path: "/contact", component: Contact },
-  { path: "/impressum", component: Impressum },
-  { path: "/datenschutz", component: Datenschutz },
-  { path: "/statistik", component: Statistic }
+  { path: "/", component: Login, name: 'Home' },
+  { path: "/home", component: Home, name: 'Home' },
+  { path: "/login", component: Login, name: 'Login' },
+  { path: "/akteneinsichten", component: Akteneinsichten, name: 'Akteneinsichten' },
+  { path: "/akteneinsicht/:id", component: Akteneinsicht, props: true, name: 'Akteneinsicht' },
+  { path: "/contact", component: Contact, name: 'Kontakt' },
+  { path: "/impressum", component: Impressum, name: 'Impressum' },
+  { path: "/datenschutz", component: Datenschutz, name: 'Datenschutz' },
+  { path: "/statistik", component: Statistic, name: 'Nutzungsauswertung' }
 ]
 const router = createRouter({ history, routes });
 export default router

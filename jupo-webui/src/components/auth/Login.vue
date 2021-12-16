@@ -2,7 +2,6 @@
 import { defineComponent, inject, Ref, ref } from 'vue'
 import { AuthStore, AuthStoreKey } from './../../store/authStore'
 import { AuthService, AuthServiceKey } from './../../libs/services/AuthService'
-import { AuthErrorCodes } from '../../libs/models/auth-error-codes'
 import moment from 'moment'
 
 export default defineComponent({
@@ -25,11 +24,11 @@ export default defineComponent({
       try{
           let resultCode = await this.authService.Login(this.username, this.password)
           
-          if (resultCode === AuthErrorCodes.Ok)
+          if (resultCode === WebApi.ReturnCodes.Ok)
             this.redirect()
-          else if (resultCode === AuthErrorCodes.ErrorUserLocked)
+          else if (resultCode === WebApi.ReturnCodes.ErrorUserLocked)
             this.errorMessage = `Der Benutzer ist bis ${moment().add(this.authService.LastErrorInfo(), "seconds").format("LT")} Uhr gesperrt.`
-          else if (resultCode === AuthErrorCodes.ErrorWrongCredentials)
+          else if (resultCode === WebApi.ReturnCodes.ErrorWrongCredentials)
             this.errorMessage = 'Die Anmeldedaten sind leider nicht korrekt.'
           else
             this.errorMessage = 'Fehler bei der Anmeldung.'

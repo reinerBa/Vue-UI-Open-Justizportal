@@ -1,19 +1,17 @@
-<script setup>
-function operator(){
-    return {}
-}
-var config = {}
+<script lang="ts" setup>
+import { inject } from "@vue/runtime-core"
+ const operator = inject('operatorConfig')
 </script>
 
 <template>
     <h3>Anschrift</h3>
     <p>
-    {{operator.name}}<br />
-    {{operator.street}}<br />
-    {{operator.town}}<br />
-    {{operator.phone}}<br />
-    {{operator.fax}}<br />
-    E-Mail: <a class="operator-email-link" href="{{'mailto:' + operator.email}}">{{operator.email}}</a><br />
+    {{operator.contact.name}}<br />
+    {{operator.contact.street}}<br />
+    {{operator.contact.town}}<br />
+    {{operator.contact.phone}}<br />
+    {{operator.contact.fax}}<br />
+    E-Mail: <a class="operator-email-link" href="{{'mailto:' + operator.contact.email}}">{{operator.contact.email}}</a><br />
     </p>
     <h3>
     Inhalt
@@ -23,7 +21,7 @@ var config = {}
     </p>
     <h3>Technik</h3>
     <p>
-    Bei technischen Fragen oder Anregungen wenden Sie sich an <a class="support-email-link" href="{{'mailto:' + config.supportEmail}}">{{config.supportEmail}}</a>. 
+    Bei technischen Fragen oder Anregungen wenden Sie sich an <a class="support-email-link" :href="'mailto:' + operator.supportEmail">{{operator.supportEmail}}</a>. 
     </p>
 </template>
 
