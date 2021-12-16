@@ -1,0 +1,7 @@
+{
+  "tokenUrl": "http://jupo-labor/webapi/token",
+  "akteneinsichtenUrl": "http://jupo-labor/webapi/akteneinsichten",
+  "dateienUrl": "http://jupo-labor/webapi/dateien",
+  "appInfo": "Portal v3.7.0 - Labor",
+  "statisticUrl": "http://jupo-labor/webapi/monitoring/"
+}
