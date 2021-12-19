@@ -14,7 +14,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
     const operator = inject('operatorConfig') as AppOperator
-    const { data } = useFetch(operator.privacyPolicyUrl).post().text()
+    const { data } = useFetch(operator.privacyPolicyUrl).get().text()
     const dataProtectionHtml = ref(data)   
 </script>
 

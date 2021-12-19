@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "./components/pages/Home.vue"
 import Datenschutz from "./components/pages/Datenschutz.vue"
 import Contact from "./components/pages/Contact.vue"
@@ -8,9 +8,9 @@ import Akteneinsicht from './components/akteneinsicht/AktenAnsicht.vue'
 import Statistic from './components/Statistic/Statistic.vue'
 import Login from './components/auth/Login.vue'
 
-const history = createWebHistory();
+const history = createWebHashHistory();
 const routes = [
-  { path: "/", component: Login, name: 'Home' },
+  { path: "/", component: Home, name: 'Home' },
   { path: "/home", component: Home, name: 'Home' },
   { path: "/login", component: Login, name: 'Login' },
   { path: "/akteneinsichten", component: Akteneinsichten, name: 'Akteneinsichten' },

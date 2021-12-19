@@ -33,6 +33,7 @@ export default defineComponent({
           else
             this.errorMessage = 'Fehler bei der Anmeldung.'
         }catch(e){
+              console.error(e)
               this.errorMessage = 'Fehler bei der Anmeldung.'
         } finally{
           this.isLoading = false

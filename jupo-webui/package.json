@@ -1,17 +1,19 @@
 {
   "name": "jupo-webui",
-  "version": "0.0.0",
+  "license": "EUPL-1.2",
+  "version": "4.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "build-pack": "vite build && jszip-cli add --force --output dist/portal.zip dist/apps/portal",
+    "build-pack": "vite build && jszip-cli add --force --output dist/portal.zip dist/",
     "generate-api": "csharp-models-to-typescript --config=tools/cs2ts-config.json"
   },
   "dependencies": {
     "@vueuse/core": "^7.3.0",
     "axios": "^0.24.0",
     "material-design-lite": "^1.3.0",
+    "pdfjs-dist": "^2.10.377",
     "vue": "^3.2.16",
     "vue-router": "^4.0.12"
   },

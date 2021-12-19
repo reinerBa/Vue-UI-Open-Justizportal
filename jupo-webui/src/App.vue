@@ -6,6 +6,7 @@ import {useRoute} from 'vue-router'
 
 export default defineComponent({
   async beforeCreate () {
+    document.head.innerHTML += '<link rel="stylesheet" href="./assets/css/color-scheme.css">'
     await ConfigService()
   },
   computed:{
@@ -24,8 +25,8 @@ export default defineComponent({
   import { AuthService, AuthServiceKey } from './libs/services/AuthService'
   import { AktenService, AktenServiceKey } from './libs/services/AktenService'
   import { DownloadService, DownloadServiceKey } from './libs/services/DownloadService'
-import { AuthStore, AuthStoreKey } from './store/authStore'
-import { StatisticService, StatisticServiceKey } from './libs/services/StatisticService'
+  import { AuthStore, AuthStoreKey } from './store/authStore'
+  import { StatisticService, StatisticServiceKey } from './libs/services/StatisticService'
 
   const route= useRoute()
   const title = computed(() =>route.name)

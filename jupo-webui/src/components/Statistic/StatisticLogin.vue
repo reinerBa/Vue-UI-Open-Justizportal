@@ -20,7 +20,8 @@ export default defineComponent({
           }
           this.errorMessage = 'Die Anmeldedaten sind leider nicht korrekt.'
         }catch(e) {
-              this.errorMessage = 'Fehler bei der Authentisierung.'
+          console.error(e)
+          this.errorMessage = 'Fehler bei der Authentisierung.'
         } finally {
           this.isLoading = false
         }
@@ -30,7 +31,6 @@ export default defineComponent({
 </script> 
 
 <script lang="ts" setup>
-  import { ref, Ref } from "@vue/reactivity"
   import { defineComponent, inject } from "@vue/runtime-core"
   import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
   const authService: AuthService = inject(AuthServiceKey)
