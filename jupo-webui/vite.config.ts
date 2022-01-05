@@ -13,6 +13,6 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
         mockPath: 'webapiMock',
         localEnabled: command === 'serve',
       }),
-    ],
+    ]
   }
 }

@@ -6,6 +6,13 @@ import { injectStrict } from './../../libs/tools'
 import { DtoAkteneinsicht } from './../../libs/models/api'
 
 export default  defineComponent({
+  setup(){
+    const isReady = ref(false)
+    const akteneinsichten: Array<DtoAkteneinsicht> = reactive([])
+    const aktenService: AktenService = injectStrict(AktenServiceKey)
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
+    return {isReady, authStore, aktenService, akteneinsichten}
+  },
   beforeRouteEnter(to, from, next){
     if(!AuthStore.IsLoggedIn())
       next('/login')
@@ -29,13 +36,6 @@ Danke für Ihr Verständnis`)
     })
   }
 })
-</script>
-
-<script lang="ts" setup>
-  const isReady = ref(false)
-  const akteneinsichten: Array<DtoAkteneinsicht> = reactive([])
-  const aktenService: AktenService = injectStrict(AktenServiceKey)
-  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
 </script>
 
 <template>

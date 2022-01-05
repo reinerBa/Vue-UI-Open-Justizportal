@@ -49,7 +49,7 @@ export class AuthStore {
         this._state.expiresAt = moment.now() + expiresIn *1e3
     }
 }
-
+/*
 const storeCotent: AuthInfo = sessionStorage.getItem(storeName) ? JSON.parse(sessionStorage.getItem(storeName)) : new AuthInfo()
 
 const state = reactive(storeCotent)
@@ -93,4 +93,4 @@ const calculateCountdown = () => {
     var duration = moment.duration(differenceTime, 'milliseconds')
     _countdown.value = duration.minutes() + ":" + duration.seconds()
 }
-
+*/

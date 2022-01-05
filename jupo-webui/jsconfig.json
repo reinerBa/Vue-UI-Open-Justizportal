@@ -1,7 +1,0 @@
-{
-    "compilerOptions": {
-      "baseUrl": "."
-    },
-    "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts",  "src/**/*.vue"],
-    "exclude": ["node_modules", "dist"]
-  }

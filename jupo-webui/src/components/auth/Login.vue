@@ -13,6 +13,8 @@ export default defineComponent({
   data() {
     return {
       password: '',
+      username:'',
+      hidePW: true,
       isLoading: false,
       errorMessage: ''
     }
@@ -49,8 +51,6 @@ export default defineComponent({
 </script> 
 
 <script lang="ts" setup>
-  const username: Ref<string> = ref('')
-  const hidePW: Ref<boolean> = ref(true)
 //  const authService: AuthService = injectStrict('AuthServiceKey')
   const authStore: AuthStore = injectStrict(AuthStoreKey)
   const {isLoggedIn} = authStore.useStore()

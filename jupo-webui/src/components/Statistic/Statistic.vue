@@ -1,6 +1,8 @@
 <script lang="ts">
   import { defineComponent, inject } from "@vue/runtime-core"
   import { DtoAkteneinsicht, DtOStatistic} from './../../libs/models/api'
+  import moment from 'moment'
+  import { StatisticService, StatisticServiceKey } from "../../libs/services/StatisticService"
 
 function eventSorter(a: DtOStatistic, b: DtOStatistic) {
   if (a.day > b.day) return 1
@@ -27,6 +29,7 @@ function orderGroups(events: Array<DtOStatistic>): Array<Array<DtOStatistic>>  {
 }
 
 export default defineComponent({
+  inject: {statisticService: {from: StatisticServiceKey as symbol}},
   components: { DaySum, HourSum },
   data(){
     return {
@@ -86,13 +89,9 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-  import { StatisticService, StatisticServiceKey } from "../../libs/services/StatisticService"
-  import moment from 'moment'
   import StatisticLogin from './StatisticLogin.vue'
   import DaySum from "./DaySum.vue"
   import HourSum from "./HourSum.vue"
-  import { injectStrict } from './../../libs/tools'
-  const statisticService: StatisticService = injectStrict(StatisticServiceKey)
 </script>
 
 <template>

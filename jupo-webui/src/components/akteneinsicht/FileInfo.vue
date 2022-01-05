@@ -9,7 +9,7 @@ import { DtoAkteneinsicht, DtOStatistic, DtoDatei } from './../../libs/models/ap
 
 export default defineComponent({
   inject: {
-//    downloadService: {from: (DownloadServiceKey as symbol)},
+    downloadService: {from: (DownloadServiceKey as symbol)},
   },
   props:{
       datei: {type: Object as PropType<DtoDatei>, required: true},
@@ -45,9 +45,6 @@ export default defineComponent({
     }
   }
 })
-</script>
-<script lang="ts" setup>
-  const downloadService: DownloadService = injectStrict(DownloadServiceKey)
 </script>
 
 <template>

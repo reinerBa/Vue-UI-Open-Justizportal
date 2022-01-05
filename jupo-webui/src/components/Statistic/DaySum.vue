@@ -6,9 +6,6 @@ export default defineComponent({
 })
 </script>
 
-<script lang="ts" setup>
-</script>
-
 <template>
 <div>
   <h5>Tagessummen</h5>

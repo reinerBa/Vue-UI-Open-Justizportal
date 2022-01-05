@@ -6,6 +6,7 @@ import { DownloadService, DownloadServiceKey } from "../../libs/services/Downloa
 
 export default defineComponent({
   emits: ['close-preview'],
+  inject: {downloadService: {from: DownloadServiceKey as symbol}},
   props: {
       downloadRestricted: {type: Boolean, required: true},
       PDF2display: {type: Object as PropType<Preview>}
@@ -46,10 +47,6 @@ export default defineComponent({
     }
   }
 })
-</script>
-
-<script lang="ts" setup>
-  const downloadService: DownloadService = injectStrict(DownloadServiceKey) as DownloadService
 </script>
 
 <template>

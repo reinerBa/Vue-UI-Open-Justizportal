@@ -5,9 +5,19 @@ import { AxiosResponse } from 'axios'
 import moment from 'moment'
 import { Preview } from '../../libs/models/preview'
 import { AuthStore, AuthStoreKey } from '../../store/authStore'
-import { DtoAkteneinsicht, DtOStatistic, DtoDatei } from './../../libs/models/api'
+import { DtoAkteneinsicht, DtoDatei } from './../../libs/models/api'
+import { injectStrict } from './../../libs/tools'
+import FileInfo from './FileInfo.vue'
+import DocumentsTable from './DocumentsTable.vue'
+import PDFModal from './PDFModal.vue'
 
 export default defineComponent({
+  setup(){
+    const aktenService: AktenService = injectStrict<AktenService>(AktenServiceKey)
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
+    return {aktenService, authStore}
+  },
+  components: {PDFModal, DocumentsTable, FileInfo},
   props: {
       id: {type: String, required: true}
   },
@@ -56,15 +66,6 @@ Danke für Ihr Verständnis`)
 
   }
 })
-</script>
-
-<script lang="ts" setup>
-  import FileInfo from './FileInfo.vue'
-  import DocumentsTable from './DocumentsTable.vue'
-  import PDFModal from './PDFModal.vue'
-  import { injectStrict } from './../../libs/tools'
-  const aktenService: AktenService = injectStrict<AktenService>(AktenServiceKey)
-  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
 </script>
 
 <template>

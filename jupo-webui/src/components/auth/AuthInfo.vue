@@ -3,8 +3,19 @@ import { ref } from '@vue/reactivity'
 import { AuthStore, AuthStoreKey } from './../../store/authStore'
 import { defineComponent, inject } from '@vue/runtime-core'
 import { AuthService, AuthServiceKey } from '../../libs/services/AuthService'
+import { injectStrict } from './../../libs/tools'
+import router from '../../router'
+import Countdown from './Countdown.vue'
 
 export default defineComponent({
+  setup(){
+    const authService: AuthService = injectStrict(AuthServiceKey)
+    const isRefreshing = ref(false)
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
+    const {expiresAt, username, isLoggedIn } = authStore.useStore()
+    return {authService, authStore, isRefreshing, expiresAt, username, isLoggedIn}
+  },
+  components: {Countdown},
   methods: {
     async logout() {
       await this.authService.Logout()
@@ -20,16 +31,6 @@ export default defineComponent({
     }
   }
 })
-</script>
-
-<script lang="ts" setup>
-    import router from '../../router'
-    import Countdown from './Countdown.vue'
-    import { injectStrict } from './../../libs/tools'
-    const authService: AuthService = injectStrict(AuthServiceKey) as AuthService
-    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
-    const {expiresAt, username, isLoggedIn } = authStore.useStore()
-    const isRefreshing = ref(false)
 </script>
 
 <template>

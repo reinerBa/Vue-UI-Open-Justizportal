@@ -1,17 +1,16 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core"
 export default defineComponent({
+  inject: {
+    operator: {from: 'operatorConfig'},
+    config: {from: 'config'}
+  },
   computed:{
     isLabor(){
       return this.config?.appInfo?.indexOf('abor') > 0
     }   
   }
 })
-</script>
-<script lang="ts" setup>
-  import { inject } from "@vue/runtime-core"
-  const operator = inject('operatorConfig')
-  const config = inject('config')
 </script>
 
 <template>

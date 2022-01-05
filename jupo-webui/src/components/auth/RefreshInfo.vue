@@ -1,27 +1,33 @@
-<script lang="ts">export default defineComponent({})</script>
-<script lang="ts" setup>
+<script lang="ts">
 import { Ref, ref } from "@vue/reactivity"
 import { defineComponent, inject } from "@vue/runtime-core"
 import { useIntervalFn, useNow } from "@vueuse/core"
 import { injectStrict } from './../../libs/tools'
 import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
 import { AuthStore, AuthStoreKey } from "../../store/authStore"
-  const SECONDS = 60e3
-  const showSnackbar = ref(false)
+const SECONDS = 60e3
 
-  const authService: AuthService= injectStrict<AuthService>(AuthServiceKey)
-  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
-  const {expiresAt, isLoggedIn} = authStore.useStore()
+export default defineComponent({
+  setup(){
+    const showSnackbar = ref(false)
+    const authService: AuthService= injectStrict<AuthService>(AuthServiceKey)
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
+    const {expiresAt, isLoggedIn} = authStore.useStore()
   
-  useIntervalFn(() => {
-    let diff = expiresAt.value - Date.now()
-    showSnackbar.value = isLoggedIn.value && diff < SECONDS
-  }, 100)
-
-  async function refresh(){
-    showSnackbar.value = false
-    await authService.Refresh()
+    useIntervalFn(() => {
+      let diff = expiresAt.value - Date.now()
+      showSnackbar.value = isLoggedIn.value && diff < SECONDS
+    }, 100)
+    
+    return {showSnackbar, authService, authStore, expiresAt, isLoggedIn, useIntervalFn}
+  },
+  methods: {
+    async refresh(){
+      this.showSnackbar = false
+      await this.authService.Refresh()
+    }
   }
+})
 </script>
 
 <template>

@@ -1,6 +1,13 @@
-<script lang="ts" setup>
-import { inject } from "@vue/runtime-core"
- const operator = inject('operatorConfig')
+<script lang="ts">
+import { defineComponent } from "@vue/runtime-core"
+
+export default defineComponent({
+    inject: {
+        operator: {
+            from: 'operatorConfig'
+        }
+    }
+})
 </script>
 
 <template>
@@ -25,5 +32,3 @@ import { inject } from "@vue/runtime-core"
     </p>
 </template>
 
-<style lang="stylus" scoped>
-</style>

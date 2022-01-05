@@ -15,6 +15,7 @@ function sortDetails(d1: DtoDetail, d2: DtoDetail): number {
 }
 
 export default defineComponent({
+  inject: {aktenService: {from: AktenServiceKey as symbol}},
   props: {
     akteneinsicht: {type: Object as PropType<DtoAkteneinsicht>, required: true},
     singlePreview: {type: Boolean, required: true}
@@ -52,7 +53,6 @@ Danke für Ihr Verständnis`)
 
 <script lang="ts" setup>
   import FileInfo from './FileInfo.vue'
-  const aktenService: AktenService = inject(AktenServiceKey) as AktenService
 </script>
 
 <template>

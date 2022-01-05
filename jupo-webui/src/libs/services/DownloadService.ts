@@ -40,9 +40,8 @@ export class DownloadService extends JpHttpServiceAbstract{
     // ansonsten geht das eigenständige PDF-JS von seiner eigenen Base-URL aus
     let dateienUrl: string = this.GetConfig().dateienUrl
     
-    if (dateienUrl.indexOf("http")<0)
-      dateienUrl=location.origin + '/' + dateienUrl
-    
+//    if (dateienUrl.indexOf("http")<0)
+//      dateienUrl=location.origin + '/' + dateienUrl  
 
     const url = dateienUrl + '/' + datei.id + '/preview?access_token'+ equ + this.getToken()
     return url

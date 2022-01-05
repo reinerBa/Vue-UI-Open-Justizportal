@@ -11,6 +11,12 @@ import { injectStrict } from './../../libs/tools'
 var intervalHandler: NodeJS.Timeout = null
 
 export default defineComponent({
+  setup(){
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
+    const {expiresAt} = authStore.useStore()
+    const nowDate: Ref<Date> = useNow()
+    return {nowDate, expiresAt, authStore}
+  },
   props: {
     expiresAt: {
       type: Number, 
@@ -32,11 +38,6 @@ export default defineComponent({
   }
 })
 </script> 
-<script lang="ts" setup>
-    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
-    const {expiresAt} = authStore.useStore()
-    const nowDate: Ref<Date> = useNow()
-</script>
 
 <template>
     <span id="countdown-time">{{countdownTime(nowDate)}}</span>

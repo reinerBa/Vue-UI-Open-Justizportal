@@ -1,6 +1,7 @@
 <script lang="ts">
 export default defineComponent({
   emits:['access-password'],
+  inject: {authService: {from: AuthServiceKey as symbol}},
   data() {
     return {
       password: '',
@@ -34,7 +35,6 @@ export default defineComponent({
   import { defineComponent, inject } from "@vue/runtime-core"
   import { injectStrict } from './../../libs/tools'
   import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
-  const authService: AuthService = injectStrict(AuthServiceKey)
 </script>
 
 <template>

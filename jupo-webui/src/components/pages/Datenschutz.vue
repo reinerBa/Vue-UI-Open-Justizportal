@@ -5,17 +5,18 @@ import { useFetch } from "@vueuse/core";
 import { AppOperator } from "src/libs/models/app-operator";
 
 export default defineComponent({
+    setup() {
+        const operator = inject('operatorConfig') as AppOperator
+        const { data } = useFetch(operator.privacyPolicyUrl).get().text()
+        const dataProtectionHtml = ref(data)   
+        return {dataProtectionHtml, data, operator}
+    },
     computed:{
         useDefault() : boolean {
             return this.operator?.privacyPolicyUrl == null ? true : this.operator.privacyPolicyUrl === 'default'
         }
     }
 })
-</script>
-<script lang="ts" setup>
-    const operator = inject('operatorConfig') as AppOperator
-    const { data } = useFetch(operator.privacyPolicyUrl).get().text()
-    const dataProtectionHtml = ref(data)   
 </script>
 
 <template>
