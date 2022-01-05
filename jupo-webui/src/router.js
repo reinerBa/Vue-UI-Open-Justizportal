@@ -14,12 +14,17 @@ const routes = [
   { path: "/home", component: Home, name: 'Home' },
   { path: "/login", component: Login, name: 'Login' },
   { path: "/akteneinsichten", component: Akteneinsichten, name: 'Akteneinsichten' },
-  { path: "/akteneinsicht/:id", component: Akteneinsicht, props: true, name: 'Akteneinsicht' },
+  { path: "/akteneinsicht/:id", component: Akteneinsicht, props: true, name: 'Elektronische Akteneinsicht' },
   { path: "/contact", component: Contact, name: 'Kontakt' },
   { path: "/impressum", component: Impressum, name: 'Impressum' },
   { path: "/datenschutz", component: Datenschutz, name: 'Datenschutz' },
   { path: "/statistik", component: Statistic, name: 'Nutzungsauswertung' },
   { path: '/:pathMatch(.*)', component: Home, name: 'Home' }
 ]
-const router = createRouter({ history, routes });
+const router = createRouter({ history, routes })
+
+router.afterEach((to) => {
+  document.title = 'Justizportal | ' + to.name
+})
+
 export default router
