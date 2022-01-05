@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { config } from '../../store/configStore'
-import {Akteneinsicht} from '../../libs/models/akteneinsicht'
+import { DtoAkteneinsicht, DtoDetail} from './../../libs/models/api'
 import { InjectionKey } from "@vue/runtime-core";
 import {JpHttpServiceAbstract} from './JpHttpServiceAbstract'
 
@@ -9,14 +9,14 @@ export const AktenServiceKey: InjectionKey<AktenService> = Symbol('AktenService'
 
 export class AktenService extends JpHttpServiceAbstract {
 
-  public GetAkteneinsichten(): Promise<AxiosResponse<Array<WebApi.DtoAkteneinsicht>>> {
+  public GetAkteneinsichten(): Promise<AxiosResponse<Array<DtoAkteneinsicht>>> {
     return axios.get(this.GetConfig().akteneinsichtenUrl, this.GetHeaders())
   }
-  public GetAkteneinsicht(id: String): Promise<AxiosResponse<WebApi.DtoAkteneinsicht>> {
-    return axios.get<WebApi.DtoAkteneinsicht>(this.GetConfig().akteneinsichtenUrl + '/' + id, this.GetHeaders())
+  public GetAkteneinsicht(id: String): Promise<AxiosResponse<DtoAkteneinsicht>> {
+    return axios.get<DtoAkteneinsicht>(this.GetConfig().akteneinsichtenUrl + '/' + id, this.GetHeaders())
   }
 
-  public GetDetails(akteneinsicht: Akteneinsicht): Promise<AxiosResponse<Array<WebApi.DtoDetail>>> {
-    return axios.get<Array<WebApi.DtoDetail>>(this.GetConfig().akteneinsichtenUrl + '/' + akteneinsicht.id + '/details', this.GetHeaders())
+  public GetDetails(akteneinsicht: DtoAkteneinsicht): Promise<AxiosResponse<Array<DtoDetail>>> {
+    return axios.get<Array<DtoDetail>>(this.GetConfig().akteneinsichtenUrl + '/' + akteneinsicht.id + '/details', this.GetHeaders())
   }
 }

@@ -4,14 +4,19 @@ import { inject, PropType } from '@vue/runtime-core'
 import { GetMimetypeName } from '../../libs/services/MimetypeService'
 import { GetFileSize } from '../../libs/services/FilesizeService'
 import { DownloadService, DownloadServiceKey } from '../../libs/services/DownloadService'
+import { injectStrict } from './../../libs/tools'
+import { DtoAkteneinsicht, DtOStatistic, DtoDatei } from './../../libs/models/api'
 
 export default defineComponent({
+  inject: {
+//    downloadService: {from: (DownloadServiceKey as symbol)},
+  },
   props:{
-      datei: {type: Object as PropType<WebApi.DtoDatei>, required: true},
+      datei: {type: Object as PropType<DtoDatei>, required: true},
       downloadRestricted: {type: Boolean, required: false, default: false}
   },
   emits: { 
-      preview: (datei: WebApi.DtoDatei) => {
+      preview: (datei: DtoDatei) => {
         if (!datei?.id) {
             console.warn('Invalid preview event payload!')
             return false
@@ -42,7 +47,7 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-  const downloadService: DownloadService = inject(DownloadServiceKey)
+  const downloadService: DownloadService = injectStrict(DownloadServiceKey)
 </script>
 
 <template>

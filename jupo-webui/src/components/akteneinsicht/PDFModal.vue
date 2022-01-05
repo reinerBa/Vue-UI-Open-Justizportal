@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, inject, PropType } from "@vue/runtime-core"
+import { injectStrict } from './../../libs/tools'
 import { Preview } from "../../libs/models/preview"
 import { DownloadService, DownloadServiceKey } from "../../libs/services/DownloadService"
 
@@ -48,7 +49,7 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-  const downloadService: DownloadService = inject(DownloadServiceKey) as DownloadService
+  const downloadService: DownloadService = injectStrict(DownloadServiceKey) as DownloadService
 </script>
 
 <template>

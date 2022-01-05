@@ -4,6 +4,7 @@ import moment from 'moment'
 import axios, { AxiosResponse } from 'axios'
 import { InjectionKey } from 'vue'
 import { JpHttpServiceAbstract } from './JpHttpServiceAbstract'
+import { DtoAkteneinsicht, DtOStatistic, ReturnCodes, LoginInformations } from './../../libs/models/api'
 
 export const AuthServiceKey: InjectionKey<AuthService> = Symbol('AuthService')
 
@@ -12,15 +13,15 @@ export class AuthService  extends JpHttpServiceAbstract{
   private _lastErrorInfo: ''
   public LastErrorInfo() { return this._lastErrorInfo }
 
-  public async Login(userName: string, password: string): Promise<WebApi.ReturnCodes>{
-    const authRequest: WebApi.LoginInformations = {
+  public async Login(userName: string, password: string): Promise<ReturnCodes>{
+    const authRequest: LoginInformations = {
       username: userName,
       password: password
     }
   
     let response = await axios.post<AuthResponse>(this.GetConfig().tokenUrl, authRequest)
     let data = response.data
-    if (response.status === 200 && data.returnCode === WebApi.ReturnCodes.Ok) {
+    if (response.status === 200 && data.returnCode === ReturnCodes.Ok) {
 
       this._token = data.authInfo.token
       let rValue = new AuthInfo({
@@ -31,10 +32,10 @@ export class AuthService  extends JpHttpServiceAbstract{
       this._authStore.setAuthInfo(rValue)
     }
   
-    return response.data.returnCode as WebApi.ReturnCodes  
+    return response.data.returnCode as ReturnCodes  
   }
 
-  public async Refresh(): Promise<WebApi.ReturnCodes> { // Promise<AxiosResponse<AuthResponse>> {
+  public async Refresh(): Promise<ReturnCodes> { // Promise<AxiosResponse<AuthResponse>> {
     let response = await axios.get<AuthResponse>(this.GetConfig().tokenUrl + '/refresh', this.GetHeaders())
   
     if (response.status === 200) {
@@ -42,7 +43,7 @@ export class AuthService  extends JpHttpServiceAbstract{
       this._authStore.ResetTimer(data.authInfo.token, data.authInfo.expiresIn)
     } 
   
-    return response.data.returnCode as WebApi.ReturnCodes
+    return response.data.returnCode as ReturnCodes
   }
 
   Logout(): void {

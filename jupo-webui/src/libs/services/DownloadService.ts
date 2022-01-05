@@ -1,5 +1,6 @@
 import { JpHttpServiceAbstract } from './JpHttpServiceAbstract'
 import { InjectionKey } from 'vue'
+import { DtoAkteneinsicht, DtoDatei } from './../../libs/models/api'
 
 declare const window: any
 
@@ -8,7 +9,7 @@ export const DownloadServiceKey: InjectionKey<DownloadService> = Symbol('Downloa
 export class DownloadService extends JpHttpServiceAbstract{
   private getToken() {return this._authStore.useStore().token.value}
 
-  public download(datei: WebApi.DtoDatei) {
+  public download(datei: DtoDatei) {
       const url = this.GetConfig().dateienUrl + '/' + datei.id + '/download?access_token=' + this.getToken()
 
       let a = document.createElement('a')
@@ -31,7 +32,7 @@ export class DownloadService extends JpHttpServiceAbstract{
       a.remove()
   }
 
-  public preview(datei: WebApi.DtoDatei, escaped: boolean = false): string {
+  public preview(datei: DtoDatei, escaped: boolean = false): string {
     let equ="="
     if (escaped) equ="%3D"
 

@@ -32,8 +32,9 @@ export default defineComponent({
 
 <script lang="ts" setup>
   import { defineComponent, inject } from "@vue/runtime-core"
+  import { injectStrict } from './../../libs/tools'
   import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
-  const authService: AuthService = inject(AuthServiceKey)
+  const authService: AuthService = injectStrict(AuthServiceKey)
 </script>
 
 <template>

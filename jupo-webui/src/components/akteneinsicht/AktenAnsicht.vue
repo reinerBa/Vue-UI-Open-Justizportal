@@ -5,6 +5,7 @@ import { AxiosResponse } from 'axios'
 import moment from 'moment'
 import { Preview } from '../../libs/models/preview'
 import { AuthStore, AuthStoreKey } from '../../store/authStore'
+import { DtoAkteneinsicht, DtOStatistic, DtoDatei } from './../../libs/models/api'
 
 export default defineComponent({
   props: {
@@ -13,7 +14,7 @@ export default defineComponent({
   data() {
     return {
       isReady: false as boolean,
-      akteneinsicht: null as WebApi.DtoAkteneinsicht,
+      akteneinsicht: null as DtoAkteneinsicht,
       singlePreview: null as Preview,
       aktenzeichenForPreview: '' as string
     }
@@ -32,7 +33,7 @@ export default defineComponent({
     transformDate(date: string): string {
       return moment(date).format('DD.MM.yyyy') 
     },
-    openPreview(pdf: WebApi.DtoDatei) {
+    openPreview(pdf: DtoDatei) {
       this.singlePreview = new Preview(pdf)
     },
     closePreview(id: string) {
@@ -40,7 +41,7 @@ export default defineComponent({
     },
     async getFullAkteneinsicht() {
       try{
-        let response: AxiosResponse<WebApi.DtoAkteneinsicht> = await this.aktenService.GetAkteneinsicht(this.id)
+        let response: AxiosResponse<DtoAkteneinsicht> = await this.aktenService.GetAkteneinsicht(this.id)
         this.akteneinsicht = response.data
 
         this.isReady = true
@@ -61,8 +62,9 @@ Danke für Ihr Verständnis`)
   import FileInfo from './FileInfo.vue'
   import DocumentsTable from './DocumentsTable.vue'
   import PDFModal from './PDFModal.vue'
-  const aktenService: AktenService = inject<AktenService>(AktenServiceKey)
-  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+  import { injectStrict } from './../../libs/tools'
+  const aktenService: AktenService = injectStrict<AktenService>(AktenServiceKey)
+  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
 </script>
 
 <template>

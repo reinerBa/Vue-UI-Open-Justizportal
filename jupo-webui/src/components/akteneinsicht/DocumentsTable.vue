@@ -4,8 +4,9 @@ import { inject, PropType } from '@vue/runtime-core'
 import { AktenService, AktenServiceKey } from './../../libs/services/AktenService'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
+import { DtoAkteneinsicht, DtOStatistic, DtoDetail } from './../../libs/models/api'
 
-function sortDetails(d1: WebApi.DtoDetail, d2: WebApi.DtoDetail): number {
+function sortDetails(d1: DtoDetail, d2: DtoDetail): number {
   if(d1.nummer < d2.nummer) {
     return -1
   } else {
@@ -15,13 +16,13 @@ function sortDetails(d1: WebApi.DtoDetail, d2: WebApi.DtoDetail): number {
 
 export default defineComponent({
   props: {
-    akteneinsicht: {type: Object as PropType<WebApi.DtoAkteneinsicht>, required: true},
+    akteneinsicht: {type: Object as PropType<DtoAkteneinsicht>, required: true},
     singlePreview: {type: Boolean, required: true}
   },
   emits: ['preview'],
   data() {
     return {
-      details: [] as Array<WebApi.DtoDetail>,
+      details: [] as Array<DtoDetail>,
       isReady: false
     }
   },
@@ -34,7 +35,7 @@ export default defineComponent({
     },
     async getDetails( ) {
         try { 
-          let response: AxiosResponse<Array<WebApi.DtoDetail>> = await this.aktenService.GetDetails(this.akteneinsicht)
+          let response: AxiosResponse<Array<DtoDetail>> = await this.aktenService.GetDetails(this.akteneinsicht)
             let details = response.data
             this.details.push(...details.sort(sortDetails))
             this.isReady = true

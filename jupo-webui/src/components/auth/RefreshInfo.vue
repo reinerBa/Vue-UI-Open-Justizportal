@@ -3,13 +3,14 @@
 import { Ref, ref } from "@vue/reactivity"
 import { defineComponent, inject } from "@vue/runtime-core"
 import { useIntervalFn, useNow } from "@vueuse/core"
+import { injectStrict } from './../../libs/tools'
 import { AuthService, AuthServiceKey } from "../../libs/services/AuthService"
 import { AuthStore, AuthStoreKey } from "../../store/authStore"
   const SECONDS = 60e3
   const showSnackbar = ref(false)
 
-  const authService: AuthService= inject<AuthService>(AuthServiceKey)
-  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+  const authService: AuthService= injectStrict<AuthService>(AuthServiceKey)
+  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
   const {expiresAt, isLoggedIn} = authStore.useStore()
   
   useIntervalFn(() => {

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
   import { ComputedRef } from '@vue/reactivity'
 import { inject } from '@vue/runtime-core'
+import { injectStrict } from './../../libs/tools'
   import { AuthStoreKey, AuthStore } from './../../store/authStore'
-  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
   const {isLoggedIn } = authStore.useStore()
 
  const operator = inject('operatorConfig')

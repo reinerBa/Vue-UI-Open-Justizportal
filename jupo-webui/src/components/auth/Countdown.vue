@@ -5,7 +5,9 @@ import { defineComponent, inject } from '@vue/runtime-core'
 import { AuthStoreKey, AuthStore } from './../../store/authStore'
 import router from '../../router'
 import { useNow } from '@vueuse/core'
+import { injectStrict } from './../../libs/tools'
 
+// @ts-ignore
 var intervalHandler: NodeJS.Timeout = null
 
 export default defineComponent({
@@ -31,7 +33,7 @@ export default defineComponent({
 })
 </script> 
 <script lang="ts" setup>
-    const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
     const {expiresAt} = authStore.useStore()
     const nowDate: Ref<Date> = useNow()
 </script>

@@ -25,8 +25,9 @@ export default defineComponent({
 <script lang="ts" setup>
     import router from '../../router'
     import Countdown from './Countdown.vue'
-    const authService: AuthService = inject(AuthServiceKey) as AuthService
-    const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+    import { injectStrict } from './../../libs/tools'
+    const authService: AuthService = injectStrict(AuthServiceKey) as AuthService
+    const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
     const {expiresAt, username, isLoggedIn } = authStore.useStore()
     const isRefreshing = ref(false)
 </script>

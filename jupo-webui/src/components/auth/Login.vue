@@ -2,9 +2,14 @@
 import { defineComponent, inject, Ref, ref } from 'vue'
 import { AuthStore, AuthStoreKey } from './../../store/authStore'
 import { AuthService, AuthServiceKey } from './../../libs/services/AuthService'
+import {injectStrict} from './../../libs/tools'
 import moment from 'moment'
+import { DtoAkteneinsicht, DtOStatistic, ReturnCodes } from './../../libs/models/api'
 
 export default defineComponent({
+  inject:{
+    "authService": {from: 'AuthServiceKey'}
+  },
   data() {
     return {
       password: '',
@@ -23,12 +28,12 @@ export default defineComponent({
       this.isLoading = true
       try{
           let resultCode = await this.authService.Login(this.username, this.password)
-          
-          if (resultCode === WebApi.ReturnCodes.Ok)
+
+          if (resultCode === ReturnCodes.Ok.toUpperCase())
             this.redirect()
-          else if (resultCode === WebApi.ReturnCodes.ErrorUserLocked)
+          else if (resultCode === ReturnCodes.ErrorUserLocked)
             this.errorMessage = `Der Benutzer ist bis ${moment().add(this.authService.LastErrorInfo(), "seconds").format("LT")} Uhr gesperrt.`
-          else if (resultCode === WebApi.ReturnCodes.ErrorWrongCredentials)
+          else if (resultCode === ReturnCodes.ErrorWrongCredentials)
             this.errorMessage = 'Die Anmeldedaten sind leider nicht korrekt.'
           else
             this.errorMessage = 'Fehler bei der Anmeldung.'
@@ -46,8 +51,8 @@ export default defineComponent({
 <script lang="ts" setup>
   const username: Ref<string> = ref('')
   const hidePW: Ref<boolean> = ref(true)
-  const authService: AuthService = inject(AuthServiceKey) as AuthService
-  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+//  const authService: AuthService = injectStrict('AuthServiceKey')
+  const authStore: AuthStore = injectStrict(AuthStoreKey)
   const {isLoggedIn} = authStore.useStore()
 </script>
 

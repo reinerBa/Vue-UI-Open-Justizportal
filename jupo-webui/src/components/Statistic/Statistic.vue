@@ -1,7 +1,8 @@
 <script lang="ts">
   import { defineComponent, inject } from "@vue/runtime-core"
+  import { DtoAkteneinsicht, DtOStatistic} from './../../libs/models/api'
 
-function eventSorter(a: WebApi.DtOStatistic, b: WebApi.DtOStatistic) {
+function eventSorter(a: DtOStatistic, b: DtOStatistic) {
   if (a.day > b.day) return 1
   if (a.day < b.day) return -1
   if (a.hour > b.hour) return 1
@@ -9,11 +10,11 @@ function eventSorter(a: WebApi.DtOStatistic, b: WebApi.DtOStatistic) {
   return 0
 }
 
-function orderGroups(events: Array<WebApi.DtOStatistic>): Array<Array<WebApi.DtOStatistic>>  {
+function orderGroups(events: Array<DtOStatistic>): Array<Array<DtOStatistic>>  {
   let keys: Set<string> = new Set()
   events.forEach(e => keys.add(e.controller + '#' + e.action))
 
-  let rArray : Array<Array<WebApi.DtOStatistic>> = []
+  let rArray : Array<Array<DtOStatistic>> = []
   keys.forEach(key => {
     let [controller, action] = key.split("#")
     let eventSet = events.filter(e => e.controller == controller && action == e.action)
@@ -36,7 +37,7 @@ export default defineComponent({
       password: '',
       loginDone: false,
       usageDays: [] as Array<string>,
-      lastStatisticResponse: [] as Array<WebApi.DtOStatistic>,
+      lastStatisticResponse: [] as Array<DtOStatistic>,
       usagesTable: {}
     }
   },
@@ -90,7 +91,8 @@ export default defineComponent({
   import StatisticLogin from './StatisticLogin.vue'
   import DaySum from "./DaySum.vue"
   import HourSum from "./HourSum.vue"
-  const statisticService: StatisticService = inject<StatisticService>(StatisticServiceKey)
+  import { injectStrict } from './../../libs/tools'
+  const statisticService: StatisticService = injectStrict(StatisticServiceKey)
 </script>
 
 <template>

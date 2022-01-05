@@ -22,25 +22,10 @@ export default defineComponent({
   import JpMenuHeader from './components/navigation/JpMenuHeader.vue'
   import RefreshInfo from './components/auth/RefreshInfo.vue'
   import AuthInfo from './components/auth/AuthInfo.vue'
-  import { AuthService, AuthServiceKey } from './libs/services/AuthService'
-  import { AktenService, AktenServiceKey } from './libs/services/AktenService'
-  import { DownloadService, DownloadServiceKey } from './libs/services/DownloadService'
-  import { AuthStore, AuthStoreKey } from './store/authStore'
-  import { StatisticService, StatisticServiceKey } from './libs/services/StatisticService'
 
   const route= useRoute()
   const title = computed(() =>route.name)
-  const authStore = new AuthStore()
-  provide(AuthStoreKey, authStore)
 
-  const authService = new AuthService(authStore, ()=> config)
-  const aktenService = new AktenService(authStore, ()=> config)
-  const downloadService = new DownloadService(authStore, ()=> config)
-  const statisticService = new StatisticService(authStore, ()=> config)
-  provide(AuthServiceKey, authService) 
-  provide(AktenServiceKey, aktenService)
-  provide(DownloadServiceKey, downloadService)
-  provide(StatisticServiceKey, statisticService)
   provide('operatorConfig', operatorConfig)
   provide('config', config)
   // typed DI is explained here https://logaretm.com/blog/type-safe-provide-inject/

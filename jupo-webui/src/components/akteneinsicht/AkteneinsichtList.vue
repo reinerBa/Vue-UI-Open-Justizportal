@@ -2,6 +2,8 @@
 import { defineComponent, inject, reactive, ref } from 'vue'
 import { AktenService, AktenServiceKey } from './../../libs/services/AktenService'
 import { AuthStore, AuthStoreKey } from '../../store/authStore'
+import { injectStrict } from './../../libs/tools'
+import { DtoAkteneinsicht } from './../../libs/models/api'
 
 export default  defineComponent({
   beforeRouteEnter(to, from, next){
@@ -31,9 +33,9 @@ Danke für Ihr Verständnis`)
 
 <script lang="ts" setup>
   const isReady = ref(false)
-  const akteneinsichten: Array<WebApi.DtoAkteneinsicht> = reactive([])
-  const aktenService: AktenService = inject(AktenServiceKey) as AktenService
-  const authStore: AuthStore = inject<AuthStore>(AuthStoreKey)
+  const akteneinsichten: Array<DtoAkteneinsicht> = reactive([])
+  const aktenService: AktenService = injectStrict(AktenServiceKey)
+  const authStore: AuthStore = injectStrict<AuthStore>(AuthStoreKey)
 </script>
 
 <template>

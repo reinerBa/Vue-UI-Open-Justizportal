@@ -10,7 +10,7 @@ import Login from './components/auth/Login.vue'
 
 const history = createWebHashHistory();
 const routes = [
-  { path: "/", component: Home, name: 'Home' },
+//  { path: "/", component: Home, name: 'Home' },
   { path: "/home", component: Home, name: 'Home' },
   { path: "/login", component: Login, name: 'Login' },
   { path: "/akteneinsichten", component: Akteneinsichten, name: 'Akteneinsichten' },
@@ -18,7 +18,8 @@ const routes = [
   { path: "/contact", component: Contact, name: 'Kontakt' },
   { path: "/impressum", component: Impressum, name: 'Impressum' },
   { path: "/datenschutz", component: Datenschutz, name: 'Datenschutz' },
-  { path: "/statistik", component: Statistic, name: 'Nutzungsauswertung' }
+  { path: "/statistik", component: Statistic, name: 'Nutzungsauswertung' },
+  { path: '/:pathMatch(.*)', component: Home, name: 'Home' }
 ]
 const router = createRouter({ history, routes });
 export default router
