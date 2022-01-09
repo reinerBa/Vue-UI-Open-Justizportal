@@ -1,7 +1,0 @@
-{
-  "tokenUrl": "/webapi/token",
-  "akteneinsichtenUrl": "/webapi/akteneinsichten",
-  "dateienUrl": "/webapi/dateien",
-  "appInfo": "Portal v3.7.0 - Labor",
-  "statisticUrl": "/webapi/monitoring/"
-}

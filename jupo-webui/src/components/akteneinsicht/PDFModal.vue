@@ -3,8 +3,10 @@ import { defineComponent, inject, PropType } from "@vue/runtime-core"
 import { injectStrict } from './../../libs/tools'
 import { Preview } from "../../libs/models/preview"
 import { DownloadService, DownloadServiceKey } from "../../libs/services/DownloadService"
+import ReadOnlyPdf from "./ReadOnlyPdf.vue"
 
 export default defineComponent({
+  components: { ReadOnlyPdf },
   emits: ['close-preview'],
   inject: {downloadService: {from: DownloadServiceKey as symbol}},
   props: {
@@ -61,6 +63,8 @@ export default defineComponent({
 
         <embed id="pdf_reader" v-if="!downloadRestricted" class="mdl-dialog__content" :src="openPDFSrc" type="application/pdf" width="100%" height="100%">
         <div v-if="downloadRestricted">
+          <ReadOnlyPdf id="read-only-pdf-viewer" :url="openPDFSrc"/>
+  
           <!--  <ng2-pdfjs-viewer v-if="downloadRestricted" id="readonly_reader" 
                 :viewerFolder="pdfJsFolder" :pdfSrc="openUrl" 
                 :download="false" :print="false" :openFile="false">
@@ -104,11 +108,11 @@ embed.mdl-dialog__content
   max-height calc(89% - 3em)
   min-height calc(82vh - 3em)
 
-ng2-pdfjs-viewer
+#read-only-pdf-viewer
   height calc(100vh - 9em)
   display block
 
-  ::ng-deep iframe
+  iframe
     max-height calc(100vh - 10.5em)
 	  
 .mdl-dialog__title
