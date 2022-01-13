@@ -61,7 +61,7 @@ export default defineComponent({
 
         <h4 id="pdfname_header" class="mdl-dialog__title">{{openPDFName}}</h4>
 
-        <embed id="pdf_reader" v-if="!downloadRestricted" class="mdl-dialog__content" :src="openPDFSrc" type="application/pdf" width="100%" height="100%">
+        <embed id="pdf_reader" v-if="!downloadRestricted" class="mdl-dialog__content" :src="openPDFSrc" type="application/pdf">
         <div v-if="downloadRestricted">
           <ReadOnlyPdf id="read-only-pdf-viewer" :url="openPDFSrc"/>
   
@@ -107,13 +107,15 @@ embed.mdl-dialog__content
   padding 0
   max-height calc(89% - 3em)
   min-height calc(82vh - 3em)
-
+  width 100%
+	  
 #read-only-pdf-viewer
-  height calc(100vh - 9em)
+  height calc(100vh - 10.25em)
   display block
 
   iframe
     max-height calc(100vh - 10.5em)
+    width 100%
 	  
 .mdl-dialog__title
   font-size: 2em;

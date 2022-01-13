@@ -24,7 +24,11 @@ export default defineComponent({
   import AuthInfo from './components/auth/AuthInfo.vue'
 
   const route= useRoute()
-  const title = computed(() =>route.name)
+  const title = computed(() =>
+  {
+    if (route.name === 'Elektronische Akteneinsicht') return sessionStorage.getItem('aktenzeichenForPreview')
+    return route.name
+  })
 
   provide('operatorConfig', operatorConfig)
   provide('config', config)

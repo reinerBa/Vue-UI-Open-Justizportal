@@ -1,0 +1,22 @@
+{
+  "headerTitle": "Justizportal XXX",
+  "homeWelcomeText": "beim Akteneinsichtsportal XXX",
+  "impressum": {
+    "name": "Oberverwaltungsgericht XXX",
+    "street": "Straße 1",
+    "town": "POSTLEITZAHL ORT",
+    "phone": "Telefon: +49 XX",
+    "fax": "Telefax: +49 XX",
+    "email": "XXX@XXX.de" 
+  },
+  "contact": {
+    "name": "Oberverwaltungsgericht XXX",
+    "street": "Straße 1",
+    "town": "POSTLEITZAHL ORT",
+    "phone": "Telefon: +49 XX",
+    "fax": "Telefax: +49 XX",
+    "email": "XXX@XXX.de" 
+  },
+  "supportEmail": "support@XXX.de",
+  "privacyPolicyUrl": "./assets/Datenschutzerklaerung.html.txt"
+}

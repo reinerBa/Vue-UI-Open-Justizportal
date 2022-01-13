@@ -1,0 +1,4 @@
+<h1>Bitte tragen sie in der Template-Datei ("Datenschutzerklärung.html.template.txt") die auf sie zutreffenden Werte ein und bennen Sie die Datei dann um in "Datenschutzerklärung.html.txt"</h1>
+
+Änderungen an dieser Datei sollten nicht committet werden, verhindern sie diese indem sie diese Datei von git ausnehmen mit:
+git update-index --assume-unchanged <file>
