@@ -1,0 +1,17 @@
+name: build project with vite
+on: push
+jobs:
+  setup-project:
+    name: setup
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.4.1
+      - run: npm -v
+      - name: install dependencies 
+        working-directory: ./jupo-webui
+        run: npm ci
+      - name: build SPA
+        working-directory: ./jupo-webui
+        run: npm run build
