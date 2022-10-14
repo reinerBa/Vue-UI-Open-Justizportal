@@ -22,7 +22,7 @@
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@ffflorian/jszip-cli": "^2.1.4",
+    "@ffflorian/jszip-cli": "^3.1.6",
     "@vitejs/plugin-vue": "^1.9.3",
     "csharp-models-to-typescript": "^0.21.1",
     "moment": "^2.29.1",
