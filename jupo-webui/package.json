@@ -2,6 +2,10 @@
   "name": "jupo-webui",
   "license": "EUPL-1.2",
   "version": "4.0.0",
+  "author": "Oberverwaltungsgericht Rheinland-Pfalz <poststelle@ovg.jm.rlp.de> (https://ovg.justiz.rlp.de)",
+  "contributors": [
+    "Reiner Bamberger <4329883+reinerBa@users.noreply.github.com> (https://github.com/reinerBa/)"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
