@@ -1,12 +1,12 @@
 <script lang="ts">
 // SPDX-FileCopyrightText: © 2019 Oberverwaltungsgericht Rheinland-Pfalz <poststelle@ovg.jm.rlp.de>, Reiner Bamberger <4329883+reinerBa@users.noreply.github.com>
 // SPDX-License-Identifier: EUPL-1.2
-import { defineComponent, ref } from 'vue'
-import { inject, PropType } from '@vue/runtime-core'
-import { AktenService, AktenServiceKey } from './../../libs/services/AktenService'
+import { defineComponent } from 'vue'
+import { PropType } from '@vue/runtime-core'
+import { AktenServiceKey } from './../../libs/services/AktenService'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
-import { DtoAkteneinsicht, DtOStatistic, DtoDetail } from './../../libs/models/api'
+import { DtoAkteneinsicht, DtoDetail } from './../../libs/models/api'
 
 function sortDetails(d1: DtoDetail, d2: DtoDetail): number {
   if(d1.nummer < d2.nummer) {
@@ -15,6 +15,7 @@ function sortDetails(d1: DtoDetail, d2: DtoDetail): number {
     return 1
   }
 }
+const EIPFileIDRegExp = /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}_/
 
 export default defineComponent({
   inject: {aktenService: {from: AktenServiceKey as symbol}},
@@ -26,13 +27,18 @@ export default defineComponent({
   data() {
     return {
       details: [] as Array<DtoDetail>,
-      isReady: false
+      isReady: false,
+      filterFileNames: true
     }
   },
   async mounted() {
       await this.getDetails()
   },
   methods: {
+    filterFileName(filename: String){
+      if (!this.filterFileNames) return filename
+      return filename.split(EIPFileIDRegExp).pop()
+    },
     transformDate(date: string): string {
       return moment(date).format('DD.MM.yyyy') 
     },
@@ -75,7 +81,7 @@ Danke für Ihr Verständnis`)
             <td class="record-file-enumeration">{{ detail.nummer }}</td>
             <td class="record-file-date">{{ transformDate( detail.datum ) }}</td>
             <td class="record-file-type">{{ detail.art }}</td>
-            <td class="record-file-description">{{ detail.beschreibung }}</td>
+            <td class="record-file-description">{{ filterFileName(detail.beschreibung) }}</td>
             <td>
             <FileInfo
                 @preview="$emit('preview', detail.datei)"
@@ -84,6 +90,11 @@ Danke für Ihr Verständnis`)
             </td>
         </tr>
         </tbody>
+        <tfoot v-if="details.length">
+          <tr><th colspan="4">
+            <label><input type="checkbox" v-model="filterFileNames"/> Beschreibung kürzen></label>
+          </th></tr>
+        </tfoot>
     </table>
 
     <!-- for test cases only -->
