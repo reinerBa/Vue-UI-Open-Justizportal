@@ -68,11 +68,13 @@ export default defineComponent({
     <span class="mdl-textfield__error">Eingabe erforderlich</span>
   </div>
 
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label jp-textfield jp-login-form__textfield">
-    <input id="login_password_input" class="mdl-textfield__input" :type="hidePW ? 'password' : 'text'" name="password" 
-      v-model="password" autocomplete="current-password" required>
-    <label v-show="!password" class="mdl-textfield__label" for="login_password_input">Passwort</label>
-    <span class="mdl-textfield__error">Eingabe erforderlich</span>
+  <div class="mdl-input-wrapper">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label jp-textfield jp-login-form__textfield">
+      <input id="login_password_input" class="mdl-textfield__input" :type="hidePW ? 'password' : 'text'" name="password" 
+        v-model="password" autocomplete="current-password" required>
+      <label v-show="!password" class="mdl-textfield__label" for="login_password_input">Passwort</label>
+      <span class="mdl-textfield__error">Eingabe erforderlich</span>
+    </div>
     <i class="material-icons mdl-textfield__label__icon" 
       @mouseleave="hidePW = true"
       @mouseup="hidePW = true"
@@ -108,9 +110,13 @@ export default defineComponent({
   padding-bottom 20px
 
 .mdl-textfield__label__icon
-  position absolute
-  right 0
-  top 20px
   cursor pointer
 
+.mdl-input-wrapper
+  display inline-flex
+
+.mdl-input-wrapper i.mdl-textfield__label__icon
+  align-self center
+  width 2rem
+  height 2rem
 </style>
