@@ -15,3 +15,5 @@ jobs:
       - name: build SPA
         working-directory: ./jupo-webui
         run: npm run build
+      - name: run tests
+        run: npm run test:once

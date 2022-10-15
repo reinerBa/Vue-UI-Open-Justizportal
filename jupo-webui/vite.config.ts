@@ -6,8 +6,11 @@ import sri from 'rollup-plugin-sri'
 
 export default ({ command }: ConfigEnv): UserConfigExport => {
   return {
-    base: "./",
-    server: {open: true},
+    base: './',
+    server: { open: true },
+    test: {
+       globals: true
+    },
     plugins: [
       vue(),
       {
