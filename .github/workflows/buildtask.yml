@@ -3,7 +3,7 @@ on: push
 jobs:
   setup-project:
     name: setup
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js environment
@@ -11,9 +11,40 @@ jobs:
       - name: install dependencies 
         working-directory: ./jupo-webui
         run: npm ci
+      - uses: actions/cache@v3.0.11
+        id: restore-deps
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+  build-project:
+    name: build SPA
+    needs: setup-project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.4.1
+      - uses: actions/cache@v3.0.11
+        id: restore-deps
+        with:
+          path: ./*
+          key: ${{ github.sha }}
       - name: build SPA
         working-directory: ./jupo-webui
         run: npm run build
+
+  test-project:
+    name: test components
+    needs: setup-project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.4.1
+      - uses: actions/cache@v3.0.11
+        id: restore-deps
+        with:
+          path: ./*
+          key: ${{ github.sha }}
       - name: run tests
         working-directory: ./jupo-webui
         run: npm run test:once
