@@ -1,6 +1,6 @@
-import {mount} from "@vue/test-utils"
-import App from "../App.vue"
-import {test, expect} from "vitest"
+import { mount } from '@vue/test-utils'
+import App from '../App.vue'
+import { test, expect } from 'vitest'
 
 const user = {
   name: 'matt'

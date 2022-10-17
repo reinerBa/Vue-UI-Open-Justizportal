@@ -1,8 +1,8 @@
-import { mount } from "@vue/test-utils";
-import { expect, test } from "vitest";
-import JpMenu from "../components/navigation/JpMenu.vue"
+import { mount } from '@vue/test-utils'
+import { expect, test } from 'vitest'
+import JpMenu from '../components/navigation/JpMenu.vue'
 
-test('jpmenu', async () =>{
+test('jpmenu', async () => {
   expect(JpMenu).toBeTruthy()
 
   const wrapper = mount(JpMenu, {})

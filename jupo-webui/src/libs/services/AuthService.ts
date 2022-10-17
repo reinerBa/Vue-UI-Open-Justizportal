@@ -10,54 +10,51 @@ import { DtoAkteneinsicht, DtOStatistic, ReturnCodes, LoginInformations } from '
 
 export const AuthServiceKey: InjectionKey<AuthService> = Symbol('AuthService')
 
-export class AuthService  extends JpHttpServiceAbstract{
+export class AuthService extends JpHttpServiceAbstract {
+  private readonly _lastErrorInfo: ''
+  public LastErrorInfo () { return this._lastErrorInfo }
 
-  private _lastErrorInfo: ''
-  public LastErrorInfo() { return this._lastErrorInfo }
-
-  public async Login(userName: string, password: string): Promise<ReturnCodes>{
+  public async Login (userName: string, password: string): Promise<ReturnCodes> {
     const authRequest: LoginInformations = {
       username: userName,
       password: password
     }
-  
-    let response = await axios.post<AuthResponse>(this.GetConfig().tokenUrl, authRequest)
-    let data = response.data
-    if (response.status === 200 && data.returnCode === ReturnCodes.Ok) {
 
+    const response = await axios.post<AuthResponse>(this.GetConfig().tokenUrl, authRequest)
+    const data = response.data
+    if (response.status === 200 && data.returnCode === ReturnCodes.Ok) {
       this._token = data.authInfo.token
-      let rValue = new AuthInfo({
-        token: data.authInfo.token, 
-        username: userName, 
+      const rValue = new AuthInfo({
+        token: data.authInfo.token,
+        username: userName,
         expiresAt: moment.now() + data.authInfo.expiresIn * 1e3
       })
       this._authStore.setAuthInfo(rValue)
     }
-  
-    return response.data.returnCode as ReturnCodes  
-  }
 
-  public async Refresh(): Promise<ReturnCodes> { // Promise<AxiosResponse<AuthResponse>> {
-    let response = await axios.get<AuthResponse>(this.GetConfig().tokenUrl + '/refresh', this.GetHeaders())
-  
-    if (response.status === 200) {
-      let data = response.data
-      this._authStore.ResetTimer(data.authInfo.token, data.authInfo.expiresIn)
-    } 
-  
     return response.data.returnCode as ReturnCodes
   }
 
-  Logout(): void {
+  public async Refresh (): Promise<ReturnCodes> { // Promise<AxiosResponse<AuthResponse>> {
+    const response = await axios.get<AuthResponse>(this.GetConfig().tokenUrl + '/refresh', this.GetHeaders())
+
+    if (response.status === 200) {
+      const data = response.data
+      this._authStore.ResetTimer(data.authInfo.token, data.authInfo.expiresIn)
+    }
+
+    return response.data.returnCode as ReturnCodes
+  }
+
+  Logout (): void {
     this._authStore.logout()
   }
 
-  public async verifyStatisticPassword (password: string): Promise<boolean>{
-    try{
-      let response = await axios.post(this.GetConfig().statisticUrl + "verifyPassword/"+ password)
-    if(response)
-      return true
-    }catch(e){
+  public async verifyStatisticPassword (password: string): Promise<boolean> {
+    try {
+      const response = await axios.post(this.GetConfig().statisticUrl + 'verifyPassword/' + password)
+      if (response) { return true }
+    } catch (e) {
       console.error(e)
     }
     return false
@@ -74,8 +71,8 @@ export async function Login(userName: string, password: string): Promise<AuthErr
   if (response.status === 200) {
     let data = response.data
     let rValue = new AuthInfo({
-      token: data.authInfo.token, 
-      username: userName, 
+      token: data.authInfo.token,
+      username: userName,
       expiresAt: moment.now() + data.authInfo.expiresIn * 1e3
     })
     useStore().setAuthInfo(rValue)
@@ -90,11 +87,11 @@ export async function Refresh(): Promise<AuthErrorCodes> { // Promise<AxiosRespo
   if (response.status === 200) {
     let data = response.data
     useStore().resetTimer(data.authInfo.token, data.authInfo.expiresIn)
-  } 
+  }
 
   return response.data.returnCode as AuthErrorCodes
 /*  .then((response: AxiosResponse<AuthResponse>) => {
-    if (response.data.returnCode !== AuthErrorCodes.Ok) return response.data.returnCode 
+    if (response.data.returnCode !== AuthErrorCodes.Ok) return response.data.returnCode
     useStore().setAuthInfo()
     useStore().resetTimer()
     return true

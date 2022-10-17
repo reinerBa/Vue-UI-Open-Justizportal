@@ -7,7 +7,7 @@ export class Preview {
   open: boolean
   datei: DtoDatei
 
-  constructor(datei: DtoDatei){
+  constructor (datei: DtoDatei) {
     this.datei = datei
     this.open = true
     this.id = datei.id

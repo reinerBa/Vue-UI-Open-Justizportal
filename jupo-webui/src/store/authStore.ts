@@ -1,55 +1,58 @@
 // SPDX-FileCopyrightText: © 2019 Oberverwaltungsgericht Rheinland-Pfalz <poststelle@ovg.jm.rlp.de>, Reiner Bamberger <4329883+reinerBa@users.noreply.github.com>
 // SPDX-License-Identifier: EUPL-1.2
 import moment from 'moment'
-import { reactive, computed, watch, ref, readonly, InjectionKey, ComputedRef } from "vue"
+import { reactive, computed, watch, ref, readonly, InjectionKey, ComputedRef } from 'vue'
 import { AuthInfo } from '../libs/models/auth-info'
 import router from '../router'
 
-const storeName = "jupo-auth-store"
+const storeName = 'jupo-auth-store'
 export const AuthStoreKey: InjectionKey<AuthStore> = Symbol('authStore')
 
 export class AuthStore {
-    protected _state: AuthInfo = null
-/*    public IsLoggedIn(): ComputedRef<boolean> {return computed(()=> Boolean(state.token))} 
+  protected _state: AuthInfo = null
+  /*    public IsLoggedIn(): ComputedRef<boolean> {return computed(()=> Boolean(state.token))}
     public Token: ComputedRef<string>
     public Username: ComputedRef<string>
     public expiresAt: ComputedRef<number>
-*/    public useStore = () => ({
-        isLoggedIn: computed(()=> Boolean(this._state.token)),
-        token: computed(()=> this._state.token),
-        username: computed(()=> this._state.username),
-        expiresAt: computed(()=> this._state.expiresAt)})
+*/ public useStore = () => ({
+    isLoggedIn: computed(() => Boolean(this._state.token)),
+    token: computed(() => this._state.token),
+    username: computed(() => this._state.username),
+    expiresAt: computed(() => this._state.expiresAt)
+  })
 
-    constructor(state: AuthInfo = null) {
-        const rawState = state || sessionStorage.getItem(storeName) ? JSON.parse(sessionStorage.getItem(storeName)) : new AuthInfo()
-        this._state = reactive(rawState)
-        watch(this._state, (value) => sessionStorage.setItem(storeName, JSON.stringify(value)))
-        
-       // this.IsLoggedIn = this._state.token
+  constructor (state: AuthInfo = null) {
+    const rawState = state || sessionStorage.getItem(storeName) ? JSON.parse(sessionStorage.getItem(storeName)) : new AuthInfo()
+    this._state = reactive(rawState)
+    watch(this._state, (value) => sessionStorage.setItem(storeName, JSON.stringify(value)))
+
+    // this.IsLoggedIn = this._state.token
   /*      this.Username = computed(()=> String(this._state.username))
         this.Token = computed(()=> String(this._state.token))
         this.expiresAt = computed(()=> Number(this._state.expiresAt))
-    */}
-    static IsLoggedIn() {
-      const rawState: AuthInfo = sessionStorage.getItem(storeName) ? JSON.parse(sessionStorage.getItem(storeName)) : new AuthInfo()
-      return !!rawState.token
-    }
+    */ }
 
-    public logout(): void {
-        this._state.username = ""
-        this._state.token = ""
-        this._state.expiresAt = 0
-    }
+  static IsLoggedIn () {
+    const rawState: AuthInfo = sessionStorage.getItem(storeName) ? JSON.parse(sessionStorage.getItem(storeName)) : new AuthInfo()
+    return !!rawState.token
+  }
 
-    public setAuthInfo(info: AuthInfo) { 
-        this._state.username = info.username,
-        this._state.token = info.token,
-        this._state.expiresAt = info.expiresAt
-    }
-    public ResetTimer(token: string, expiresIn: number) {
-        this._state.token = token
-        this._state.expiresAt = moment.now() + expiresIn *1e3
-    }
+  public logout (): void {
+    this._state.username = ''
+    this._state.token = ''
+    this._state.expiresAt = 0
+  }
+
+  public setAuthInfo (info: AuthInfo) {
+    this._state.username = info.username,
+    this._state.token = info.token,
+    this._state.expiresAt = info.expiresAt
+  }
+
+  public ResetTimer (token: string, expiresIn: number) {
+    this._state.token = token
+    this._state.expiresAt = moment.now() + expiresIn * 1e3
+  }
 }
 /*
 const storeCotent: AuthInfo = sessionStorage.getItem(storeName) ? JSON.parse(sessionStorage.getItem(storeName)) : new AuthInfo()
@@ -81,7 +84,7 @@ export const useStore = () => ({
         state.expiresAt = moment.now() + expiresIn *1e3
         calculateCountdown()
     },
-    setAuthInfo: (info: AuthInfo) => { 
+    setAuthInfo: (info: AuthInfo) => {
         state.username = info.username,
         state.token = info.token,
         state.expiresAt = info.expiresAt

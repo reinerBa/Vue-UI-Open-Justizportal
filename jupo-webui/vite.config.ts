@@ -9,19 +9,19 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
     base: './',
     server: { open: true },
     test: {
-       globals: true
+      globals: true
     },
     plugins: [
       vue(),
       {
-        enforce: "post",
-        ...sri({ publicPath: "./", selectors: ["script", "link[rel=modulepreload]"] })
+        enforce: 'post',
+        ...sri({ publicPath: './', selectors: ['script', 'link[rel=modulepreload]'] })
       },
       viteMockServe({
         // default
         mockPath: 'webapiMock',
-        localEnabled: command === 'serve',
-      }),
+        localEnabled: command === 'serve'
+      })
     ]
   }
 }

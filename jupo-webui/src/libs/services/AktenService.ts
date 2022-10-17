@@ -2,23 +2,23 @@
 // SPDX-License-Identifier: EUPL-1.2
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { config } from '../../store/configStore'
-import { DtoAkteneinsicht, DtoDetail} from './../../libs/models/api'
-import { InjectionKey } from "@vue/runtime-core";
-import {JpHttpServiceAbstract} from './JpHttpServiceAbstract'
+import { DtoAkteneinsicht, DtoDetail } from './../../libs/models/api'
+import { InjectionKey } from '@vue/runtime-core'
+import { JpHttpServiceAbstract } from './JpHttpServiceAbstract'
 
 interface Headers {Authorization: string}
 export const AktenServiceKey: InjectionKey<AktenService> = Symbol('AktenService')
 
 export class AktenService extends JpHttpServiceAbstract {
-
-  public GetAkteneinsichten(): Promise<AxiosResponse<Array<DtoAkteneinsicht>>> {
-    return axios.get(this.GetConfig().akteneinsichtenUrl, this.GetHeaders())
-  }
-  public GetAkteneinsicht(id: String): Promise<AxiosResponse<DtoAkteneinsicht>> {
-    return axios.get<DtoAkteneinsicht>(this.GetConfig().akteneinsichtenUrl + '/' + id, this.GetHeaders())
+  public async GetAkteneinsichten (): Promise<AxiosResponse<DtoAkteneinsicht[]>> {
+    return await axios.get(this.GetConfig().akteneinsichtenUrl, this.GetHeaders())
   }
 
-  public GetDetails(akteneinsicht: DtoAkteneinsicht): Promise<AxiosResponse<Array<DtoDetail>>> {
-    return axios.get<Array<DtoDetail>>(this.GetConfig().akteneinsichtenUrl + '/' + akteneinsicht.id + '/details', this.GetHeaders())
+  public async GetAkteneinsicht (id: String): Promise<AxiosResponse<DtoAkteneinsicht>> {
+    return await axios.get<DtoAkteneinsicht>(this.GetConfig().akteneinsichtenUrl + '/' + id, this.GetHeaders())
+  }
+
+  public async GetDetails (akteneinsicht: DtoAkteneinsicht): Promise<AxiosResponse<DtoDetail[]>> {
+    return await axios.get<DtoDetail[]>(this.GetConfig().akteneinsichtenUrl + '/' + akteneinsicht.id + '/details', this.GetHeaders())
   }
 }

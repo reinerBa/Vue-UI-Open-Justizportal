@@ -1,59 +1,58 @@
 // SPDX-FileCopyrightText: © 2019 Oberverwaltungsgericht Rheinland-Pfalz <poststelle@ovg.jm.rlp.de>, Reiner Bamberger <4329883+reinerBa@users.noreply.github.com>
 // SPDX-License-Identifier: EUPL-1.2
-import { reactive, computed, watch } from "vue";
-const storeName = "vite-recipe-book-store";
-const id = () => "_" + Math.random().toString(36).substr(2, 9);
+import { reactive, computed, watch } from 'vue'
+const storeName = 'vite-recipe-book-store'
+const id = () => '_' + Math.random().toString(36).substr(2, 9)
 const state = reactive(
-    localStorage.getItem(storeName)
-        ? JSON.parse(localStorage.getItem(storeName))
-        : {
-              ingredients: [],
-              recipes: [],
-          }
-);
-watch(state, (value) => localStorage.setItem(storeName, JSON.stringify(value)));
+  localStorage.getItem(storeName)
+    ? JSON.parse(localStorage.getItem(storeName))
+    : {
+      ingredients: [],
+      recipes: []
+    }
+)
+watch(state, (value) => localStorage.setItem(storeName, JSON.stringify(value)))
 export const useStore = () => ({
-    ingredients: computed(() =>
-        state.ingredients.sort((a, b) => a.name.localeCompare(b.name))
-    ),
-    recipes: computed(() =>
-        state.recipes
-            .map((recipe) => ({
-                ...recipe,
-                ingredients: recipe.ingredients.map((ingredient) =>
-                    state.ingredients.find((i) => i.id === ingredient)
-                ),
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name))
-    ),
-    addIngredient: (ingredient) => {
-        state.ingredients = [
-            ...state.ingredients,
-            { id: id(), name: ingredient },
-        ];
-    },
-    removeIngredient: (ingredient) => {
-        if (
-            state.recipes.some((recipe) =>
-                recipe.ingredients.some((i) => i.id === ingredient.id)
-            )
+  ingredients: computed(() =>
+    state.ingredients.sort((a, b) => a.name.localeCompare(b.name))
+  ),
+  recipes: computed(() =>
+    state.recipes
+      .map((recipe) => ({
+        ...recipe,
+        ingredients: recipe.ingredients.map((ingredient) =>
+          state.ingredients.find((i) => i.id === ingredient)
         )
-            return;
-        state.ingredients = state.ingredients.filter(
-            (i) => i.id !== ingredient.id
-        );
-    },
-    addRecipe: (recipe) => {
-        state.recipes = [
-            ...state.recipes,
-            {
-                id: id(),
-                ...recipe,
-                ingredients: recipe.ingredients.map((i) => i.id),
-            },
-        ];
-    },
-    removeRecipe: (recipe) => {
-        state.recipes = state.recipes.filter((r) => r.id !== recipe.id);
-    },
-});
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  ),
+  addIngredient: (ingredient) => {
+    state.ingredients = [
+      ...state.ingredients,
+      { id: id(), name: ingredient }
+    ]
+  },
+  removeIngredient: (ingredient) => {
+    if (
+      state.recipes.some((recipe) =>
+        recipe.ingredients.some((i) => i.id === ingredient.id)
+      )
+    ) { return }
+    state.ingredients = state.ingredients.filter(
+      (i) => i.id !== ingredient.id
+    )
+  },
+  addRecipe: (recipe) => {
+    state.recipes = [
+      ...state.recipes,
+      {
+        id: id(),
+        ...recipe,
+        ingredients: recipe.ingredients.map((i) => i.id)
+      }
+    ]
+  },
+  removeRecipe: (recipe) => {
+    state.recipes = state.recipes.filter((r) => r.id !== recipe.id)
+  }
+})
