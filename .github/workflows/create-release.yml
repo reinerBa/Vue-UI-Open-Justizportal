@@ -1,0 +1,62 @@
+name: "automatic-release"
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  setup-project:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.4.1
+      - name: install dependencies 
+        working-directory: ./jupo-webui
+        run: npm ci
+      - uses: actions/cache@v3.0.11
+        id: restore-deps
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+  test-project:
+    name: test components
+    needs: setup-project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3.4.1
+      - uses: actions/cache@v3.0.11
+        id: restore-deps
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+      - name: run tests
+        working-directory: ./jupo-webui
+        run: npm run test:once
+
+  build-project:
+    name: build SPA
+    needs: test-project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3.4.1
+      - uses: actions/cache@v3.0.11
+        id: restore-deps
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+      - name: build SPA
+        working-directory: ./jupo-webui
+        run: npm run build
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r SPA-Files.zip jupo-webui/dist/
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE
+            README.md
+            SPA-Files.zip
