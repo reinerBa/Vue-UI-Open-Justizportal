@@ -19,6 +19,8 @@ jobs:
         with:
           path: ./*
           key: ${{ github.sha }}
+      - name: Aqua Security Trivy
+        uses: aquasecurity/trivy-action@0.9.2
 
   test-project:
     name: test components
