@@ -60,3 +60,9 @@ jobs:
             LICENSE
             README.md
             SPA-Files.zip
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-ui-artifact
+          path: ./jupo-webui/dist
+          retention-days: 5
